@@ -15,9 +15,6 @@ Main goals/ideas are descripted below:
 
 -   Download of latest Registration Data (‘Dados Cadastrais’) available
     on CVM - 100%;
--   Quick access to Registration Data (‘Dados Cadastrais’), which will
-    be updated on a monthly basis and will provide a quicker access to
-    the database - 0%;
 -   Develop a function that simplifies funds names (i.e. transforms
     ‘FUNDO DE INVESTIMENTO EM DIREITOS CREDITORIOS’ to ‘FIDC’) - 0%.
 
@@ -31,7 +28,9 @@ You can install the development version of dadosCVM from
 devtools::install_github("lucasan93/dadosCVM")
 ```
 
-## Example 1: Downloading the latest registration data from CVM:
+## Examples
+
+### 1: Downloading the latest registration data from CVM:
 
 The function *cad\_fi()* downloads the latest registration data
 available on CVM.
