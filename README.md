@@ -29,38 +29,40 @@ You can install the development version of dadosCVM from
 devtools::install_github("lucasan93/dadosCVM")
 ```
 
-## Example
+## Example 1: Downloading the latest registration data from CVM:
 
-This is a basic example which shows you how to solve a common problem:
-
-``` r
-#library(dadosCVM)
-## basic example code
-```
-
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+The function *cad\_fi()* downloads the latest registration data
+available on CVM.
 
 ``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
+library(dadosCVM)
+library(dplyr)
 ```
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this. You could also
-use GitHub Actions to re-render `README.Rmd` every time you push. An
-example workflow can be found here:
-<https://github.com/r-lib/actions/tree/v1/examples>.
+Below the top-10 funds in operation are extracted, sorted by their
+equity and identified by their CNPJ (Brazil National Registry of Legal
+Entities number).
 
-You can also embed plots, for example:
+``` r
+dados_cadastrais <- cad_fi() %>%
+                      filter(situacao == 'EM FUNCIONAMENTO NORMAL') %>% 
+                      select(cnpj,
+                             classe,
+                             tipo,
+                             pl) %>% 
+                      arrange(desc(pl)) %>% 
+                      slice_head(n = 10)
 
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+dados_cadastrais
+#>                  cnpj              classe tipo           pl
+#> 1  01.608.573/0001-65 Fundo de Renda Fixa   FI 161992521081
+#> 2  27.146.328/0001-77 Fundo de Renda Fixa   FI 139552555270
+#> 3  07.593.972/0001-86 Fundo de Renda Fixa   FI 122535371859
+#> 4  22.985.157/0001-56           FIP Multi  FIP 107568311434
+#> 5  00.822.055/0001-87 Fundo de Renda Fixa   FI  95571933959
+#> 6  01.597.187/0001-15 Fundo de Renda Fixa   FI  94980870025
+#> 7  42.592.302/0001-46 Fundo de Renda Fixa   FI  68004534472
+#> 8  42.592.315/0001-15 Fundo de Renda Fixa   FI  68000175320
+#> 9  04.288.966/0001-27 Fundo de Renda Fixa   FI  63260905203
+#> 10 03.737.219/0001-66 Fundo de Renda Fixa   FI  55297829993
+```
