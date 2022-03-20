@@ -8,7 +8,16 @@
 
 The goal of dadosCVM is to obtain data of investments funds registered
 on Comissão de Valores Imobiliários (*Security and Exchange Commissions
-from Brazil*).
+from Brazil*). Data is collected from files available at
+<http://dados.cvm.gov.br/dados/>.
+
+Main goals/ideas are descripted below:
+
+-   Download of latest Registration Data (‘Dados Cadastrais’) available
+    on CVM - 100%;
+-   Quick access to Registration Data (‘Dados Cadastrais’), which will
+    be updated on a monthly basis and will provide a quicker access to
+    the database;
 
 ## Installation
 
