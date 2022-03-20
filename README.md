@@ -17,7 +17,9 @@ Main goals/ideas are descripted below:
     on CVM - 100%;
 -   Quick access to Registration Data (‘Dados Cadastrais’), which will
     be updated on a monthly basis and will provide a quicker access to
-    the database;
+    the database - 0%;
+-   Develop a function that simplifies funds names (i.e. transforms
+    ‘FUNDO DE INVESTIMENTO EM DIREITOS CREDITORIOS’ to ‘FIDC’) - 0%.
 
 ## Installation
 
