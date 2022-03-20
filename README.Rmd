@@ -42,6 +42,7 @@ The function _cad_fi()_ downloads the latest registration data available on CVM.
 ```{r example, warning=FALSE, message=FALSE}
 library(dadosCVM)
 library(dplyr)
+library(kableExtra)
 ```
 
 Below the top-10 funds in operation are extracted, sorted by their equity and identified by their CNPJ (Brazil National Registry of Legal Entities number).
@@ -52,10 +53,14 @@ dados_cadastrais <- cad_fi() %>%
                       select(cnpj,
                              classe,
                              tipo,
+                             inicio_atv,
+                             pl_data,
                              pl) %>% 
                       arrange(desc(pl)) %>% 
-                      slice_head(n = 10)
+                      slice_head(n = 10) %>% 
+                      mutate(pl = format(pl,
+                                         big.mark = ','))
 
-dados_cadastrais
+kable(dados_cadastrais)
 ```
 
