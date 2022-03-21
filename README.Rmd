@@ -18,11 +18,12 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of dadosCVM is to obtain data of investments funds registered on Comissão de Valores Mobiliários (_Security and Exchange Commissions from Brazil_). Data is collected from files available at http://dados.cvm.gov.br/dados/. 
+The goal of dadosCVM is to obtain and adjust data of investments funds registered on Comissão de Valores Mobiliários (Security and Exchange Commissions from Brazil). Data is collected from files available at http://dados.cvm.gov.br/dados/. 
 
 Main goals/ideas are descripted below:
 
-  - cad_fi(): Download the latest Registration Data ('Dados Cadastrais') available on CVM - 100%;
+  - cad_fi(): Download the latest Registration Data ('Dados Cadastrais') available on CVM at  - 100%;
+  - fidc(): Develop a function that downloads monthly FIDC data between two dates from a selected table of the FIDC files located at http://dados.cvm.gov.br/dados/FIDC/DOC/INF_MENSAL/DADOS/;
   - simpl_names(): Develop a function that simplifies funds names (i.e. transforms 'FUNDO DE INVESTIMENTO EM DIREITOS CREDITORIOS' to 'FIDC') - 0%.
 
 ## Installation
@@ -46,7 +47,7 @@ library(dplyr)
 library(kableExtra)
 ```
 
-Below the top-10 funds in operation are extracted, sorted by their equity and identified by their CNPJ (Brazil National Registry of Legal Entities number).
+Below the top-10 funds in operation are extracted, sorted by their equity and identified by their CNPJ (Brazil National Registry of Legal Entities number). Note that the _data.frame_ contains 40 columns and more than 60 thousand observations. 
 
 ```{r cadfi, warning=FALSE, message=FALSE}
 dados_cadastrais <- cad_fi() %>%
