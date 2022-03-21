@@ -59,19 +59,19 @@ dados_diarios <- function(cnpj, start, end){
         diario <- read.csv(temp,
                           sep   = ';',
                           quote = "") %>%
-          select(CNPJ_FUNDO,
-                 DT_COMPTC,
-                 VL_TOTAL,
-                 VL_QUOTA,
-                 VL_PATRIM_LIQ,
-                 CAPTC_DIA,
-                 RESG_DIA,
-                 NR_COTST) %>%
-          mutate(DT_COMPTC = as.Date(DT_COMPTC,
+          select(.data$CNPJ_FUNDO,
+                 .data$DT_COMPTC,
+                 .data$VL_TOTAL,
+                 .data$VL_QUOTA,
+                 .data$VL_PATRIM_LIQ,
+                 .data$CAPTC_DIA,
+                 .data$RESG_DIA,
+                 .data$NR_COTST) %>%
+          mutate(DT_COMPTC = as.Date(.data$DT_COMPTC,
                                      '%Y-%m-%d')) %>%
-          filter(CNPJ_FUNDO %in% cnpj   &
-                   DT_COMPTC    >= start  &
-                   DT_COMPTC    <= end)
+          filter(.data$CNPJ_FUNDO %in% cnpj   &
+                 .data$DT_COMPTC    >= start  &
+                 .data$DT_COMPTC    <= end)
 
         diario_f <- rbind(diario,
                           diario_f)
@@ -120,19 +120,19 @@ dados_diarios <- function(cnpj, start, end){
                                months[month],
                                '.csv')),
                             sep = ';') %>%
-          select(CNPJ_FUNDO,
-                 DT_COMPTC,
-                 VL_TOTAL,
-                 VL_QUOTA,
-                 VL_PATRIM_LIQ,
-                 CAPTC_DIA,
-                 RESG_DIA,
-                 NR_COTST) %>%
-          mutate(DT_COMPTC = as.Date(DT_COMPTC,
+          select(.data$CNPJ_FUNDO,
+                 .data$DT_COMPTC,
+                 .data$VL_TOTAL,
+                 .data$VL_QUOTA,
+                 .data$VL_PATRIM_LIQ,
+                 .data$CAPTC_DIA,
+                 .data$RESG_DIA,
+                 .data$NR_COTST) %>%
+          mutate(DT_COMPTC = as.Date(.data$DT_COMPTC,
                                      '%Y-%m-%d')) %>%
-          filter(CNPJ_FUNDO %in% cnpj   &
-                   DT_COMPTC    >= start  &
-                   DT_COMPTC    <= end)
+          filter(.data$CNPJ_FUNDO %in% cnpj   &
+                 .data$DT_COMPTC    >= start  &
+                 .data$DT_COMPTC    <= end)
 
         diario_f <- rbind(diario,
                           diario_f)
@@ -145,23 +145,23 @@ dados_diarios <- function(cnpj, start, end){
 
   diario_f <- diario_f %>%
                 clean_names() %>%
-                rename(cnpj     = cnpj_fundo,
-                       data     = dt_comptc,
-                       v_total  = vl_total,
-                       v_quota  = vl_quota,
-                       pl       = vl_patrim_liq,
-                       capt     = captc_dia,
-                       resg     = resg_dia,
-                       cotistas = nr_cotst) %>%
-                mutate(cnpj     = as.character(cnpj),
-                       data     = as.Date(data,
+                rename(cnpj     = .data$cnpj_fundo,
+                       data     = .data$dt_comptc,
+                       v_total  = .data$vl_total,
+                       v_quota  = .data$vl_quota,
+                       pl       = .data$vl_patrim_liq,
+                       capt     = .data$captc_dia,
+                       resg     = .data$resg_dia,
+                       cotistas = .data$nr_cotst) %>%
+                mutate(cnpj     = as.character(.data$cnpj),
+                       data     = as.Date(.data$data,
                                           '%Y-%m_%d'),
-                       v_total  = as.numeric(v_total),
-                       v_quota  = as.numeric(v_quota),
-                       pl       = as.numeric(pl),
-                       capt     = as.numeric(capt),
-                       resg     = as.numeric(resg),
-                       cotistas = as.numeric(cotistas))
+                       v_total  = as.numeric(.data$v_total),
+                       v_quota  = as.numeric(.data$v_quota),
+                       pl       = as.numeric(.data$pl),
+                       capt     = as.numeric(.data$capt),
+                       resg     = as.numeric(.data$resg),
+                       cotistas = as.numeric(.data$cotistas))
 
   return(diario_f)
   rm(diario_f)
