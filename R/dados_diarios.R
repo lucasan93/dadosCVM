@@ -12,8 +12,14 @@
 #' @examples
 dados_diarios <- function(cnpj, start, end){
 
+  # Require Packages
   require(dplyr)
   require(janitor)
+
+
+  if (end <= start && start >= as.Date('2005-01-01')) {
+
+
 
   url1 <- paste0('http://dados.cvm.gov.br',
                  '/dados',
@@ -138,7 +144,7 @@ dados_diarios <- function(cnpj, start, end){
   }
 
   diario_f <- diario_f %>%
-                janitor::clean_names() %>%
+                clean_names() %>%
                 rename(cnpj     = cnpj_fundo,
                        data     = dt_comptc,
                        v_total  = vl_total,
@@ -162,5 +168,11 @@ dados_diarios <- function(cnpj, start, end){
   rm(diario)
   rm(dados_m)
 
-}
+  } else if (end < start) {
+    print('Start date must be before end date.')
+  } else if (start < as.Date('2005-01-01')) {
 
+    print('Minimum date must be 2005-01-01.')
+  }
+
+}
