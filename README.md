@@ -14,10 +14,16 @@ Commissions from Brazil). Data is collected from files available at
 Main goals/ideas are descripted below:
 
 -   cad\_fi(): Download the latest Registration Data (‘Dados
-    Cadastrais’) available on CVM at - 100%;
+    Cadastrais’) available on CVM at
+    <http://dados.cvm.gov.br/dados/FI/CAD/DADOS/> - 100%;
+-   dados\_diarios(): Download the daily fund information (CNPJ, fund
+    raisings and withdraws, investors’ amount, equity value, share
+    value) of selected funds between two dates. Data is available at
+    <http://dados.cvm.gov.br/dados/FI/DOC/INF_DIARIO/DADOS/> - under
+    development;
 -   fidc(): Develop a function that downloads monthly FIDC data between
     two dates from a selected table of the FIDC files located at
-    <http://dados.cvm.gov.br/dados/FIDC/DOC/INF_MENSAL/DADOS/>;
+    <http://dados.cvm.gov.br/dados/FIDC/DOC/INF_MENSAL/DADOS/> - 0%;
 -   simpl\_names(): Develop a function that simplifies funds names
     (i.e. transforms ‘FUNDO DE INVESTIMENTO EM DIREITOS CREDITORIOS’ to
     ‘FIDC’) - 0%.
