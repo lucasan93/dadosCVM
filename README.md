@@ -7,16 +7,17 @@
 <!-- badges: end -->
 
 The goal of dadosCVM is to obtain data of investments funds registered
-on Comissão de Valores Imobiliários (*Security and Exchange Commissions
+on Comissão de Valores Mobiliários (*Security and Exchange Commissions
 from Brazil*). Data is collected from files available at
 <http://dados.cvm.gov.br/dados/>.
 
 Main goals/ideas are descripted below:
 
--   Download of latest Registration Data (‘Dados Cadastrais’) available
-    on CVM - 100%;
--   Develop a function that simplifies funds names (i.e. transforms
-    ‘FUNDO DE INVESTIMENTO EM DIREITOS CREDITORIOS’ to ‘FIDC’) - 0%.
+-   cad\_fi(): Download the latest Registration Data (‘Dados
+    Cadastrais’) available on CVM - 100%;
+-   simpl\_names(): Develop a function that simplifies funds names
+    (i.e. transforms ‘FUNDO DE INVESTIMENTO EM DIREITOS CREDITORIOS’ to
+    ‘FIDC’) - 0%.
 
 ## Installation
 
