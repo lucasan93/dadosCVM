@@ -152,6 +152,3 @@ dados_diarios <- function(cnpj, start, end){
 
 }
 
-dados_diarios(cnpj  = '01.608.573/0001-65',
-              start = as.Date('2021-03-01'),
-              end   = as.Date('2020-11-01'))
