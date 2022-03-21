@@ -299,3 +299,40 @@ FI
 </tr>
 </tbody>
 </table>
+
+### 2: Obtaining daily data
+
+The function *dados\_diarios()* downloads daily data (CNPJ, portfolio
+value, share value, equity, withdraws, fund raisings, and number of
+investors) for a specific fund (identified by its CNPJ) between two
+given dates. Note that daily data is only available for funds of type
+‘FI’.
+
+``` r
+library(dadosCVM)
+library(dplyr)
+library(ggplot2)
+library(scales)
+```
+
+Below we obtain data from funds displayed in the previous example and
+plot their equity value over time:
+
+``` r
+#dados_diarios(cnpj  = dados_cadastrais$cnpj,
+##                       start = as.Date('2005-01-01'),
+#                       end   = as.Date('2022-03-01')) %>% 
+#      select(data,
+#             cnpj,
+#             pl) %>% 
+##      ggplot() +
+#      aes(x = data,
+##          y = pl,
+##          color = cnpj) +
+##      geom_line() +
+#      scale_y_continuous(labels = unit_format(unit = "Bi", 
+##                                              scale = 1e-9)) +
+#      xlab('Date') +
+#      ylab('Equity (BRL)') +
+#      theme_minimal()
+```
