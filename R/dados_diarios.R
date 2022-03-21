@@ -1,3 +1,15 @@
+#' Dados Diarios
+#'
+#' This function returns a data.frame of investment funds daily data from CVM
+#'
+#' @param cnpj a character vector containing the CNPJ of the required funds
+#' @param start a starting date, minimum value is 2005-01-01
+#' @param end an end date
+#'
+#' @return data.frame
+#' @export
+#'
+#' @examples
 dados_diarios <- function(cnpj, start, end){
 
   require(dplyr)
