@@ -9,13 +9,9 @@
 #' @return data.frame
 #' @export
 #'
+#' @importFrom magrittr %>%
 #' @examples
 dados_diarios <- function(cnpj, start, end){
-
-  # Require Packages
-  require(dplyr)
-  require(janitor)
-
 
   if (end <= start && start >= as.Date('2005-01-01')) {
 
@@ -50,16 +46,16 @@ dados_diarios <- function(cnpj, start, end){
     for (month in seq_along(dados_m)) {
 
         temp <- tempfile()
-        download.file(paste0(url1,
+        utils::download.file(paste0(url1,
                              '/inf_diario_fi_',
                              dados_m[month],
                              '.csv'),
                       temp)
 
-        diario <- read.csv(temp,
+        diario <- utils::read.csv(temp,
                           sep   = ';',
                           quote = "") %>%
-          select(.data$CNPJ_FUNDO,
+          dplyr::select(.data$CNPJ_FUNDO,
                  .data$DT_COMPTC,
                  .data$VL_TOTAL,
                  .data$VL_QUOTA,
@@ -67,9 +63,9 @@ dados_diarios <- function(cnpj, start, end){
                  .data$CAPTC_DIA,
                  .data$RESG_DIA,
                  .data$NR_COTST) %>%
-          mutate(DT_COMPTC = as.Date(.data$DT_COMPTC,
+          dplyr::mutate(DT_COMPTC = as.Date(.data$DT_COMPTC,
                                      '%Y-%m-%d')) %>%
-          filter(.data$CNPJ_FUNDO %in% cnpj   &
+          dplyr::filter(.data$CNPJ_FUNDO %in% cnpj   &
                  .data$DT_COMPTC    >= start  &
                  .data$DT_COMPTC    <= end)
 
@@ -104,7 +100,7 @@ dados_diarios <- function(cnpj, start, end){
     for (year in seq_along(hist_y)) {
 
       temp <- tempfile()
-      download.file(paste0(url2,
+      utils::download.file(paste0(url2,
                            '/inf_diario_fi_',
                            hist_y[year],
                            '.zip'),
@@ -115,12 +111,12 @@ dados_diarios <- function(cnpj, start, end){
 
       for (month in seq_along(months)) {
 
-        diario <- read.csv(unz(temp,
+        diario <- utils::read.csv(unz(temp,
                                paste0('inf_diario_fi_',
                                months[month],
                                '.csv')),
                             sep = ';') %>%
-          select(.data$CNPJ_FUNDO,
+          dplyr::select(.data$CNPJ_FUNDO,
                  .data$DT_COMPTC,
                  .data$VL_TOTAL,
                  .data$VL_QUOTA,
@@ -128,9 +124,9 @@ dados_diarios <- function(cnpj, start, end){
                  .data$CAPTC_DIA,
                  .data$RESG_DIA,
                  .data$NR_COTST) %>%
-          mutate(DT_COMPTC = as.Date(.data$DT_COMPTC,
+          dplyr::mutate(DT_COMPTC = as.Date(.data$DT_COMPTC,
                                      '%Y-%m-%d')) %>%
-          filter(.data$CNPJ_FUNDO %in% cnpj   &
+          dplyr::filter(.data$CNPJ_FUNDO %in% cnpj   &
                  .data$DT_COMPTC    >= start  &
                  .data$DT_COMPTC    <= end)
 
@@ -144,8 +140,8 @@ dados_diarios <- function(cnpj, start, end){
   }
 
   diario_f <- diario_f %>%
-                clean_names() %>%
-                rename(cnpj     = .data$cnpj_fundo,
+                janitor::clean_names() %>%
+                dplyr::rename(cnpj     = .data$cnpj_fundo,
                        data     = .data$dt_comptc,
                        v_total  = .data$vl_total,
                        v_quota  = .data$vl_quota,
@@ -153,7 +149,7 @@ dados_diarios <- function(cnpj, start, end){
                        capt     = .data$captc_dia,
                        resg     = .data$resg_dia,
                        cotistas = .data$nr_cotst) %>%
-                mutate(cnpj     = as.character(.data$cnpj),
+                dplyr::mutate(cnpj     = as.character(.data$cnpj),
                        data     = as.Date(.data$data,
                                           '%Y-%m_%d'),
                        v_total  = as.numeric(.data$v_total),
