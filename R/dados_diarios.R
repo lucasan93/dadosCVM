@@ -1,5 +1,8 @@
 dados_diarios <- function(cnpj, start, end){
 
+  require(dplyr)
+  require(janitor)
+
   url1 <- paste0('http://dados.cvm.gov.br',
                  '/dados',
                  '/FI',
@@ -122,6 +125,26 @@ dados_diarios <- function(cnpj, start, end){
 
   }
 
+  diario_f <- diario_f %>%
+                janitor::clean_names() %>%
+                rename(cnpj     = cnpj_fundo,
+                       data     = dt_comptc,
+                       v_total  = vl_total,
+                       v_quota  = vl_quota,
+                       pl       = vl_patrim_liq,
+                       capt     = captc_dia,
+                       resg     = resg_dia,
+                       cotistas = nr_cotst) %>%
+                mutate(cnpj     = as.character(cnpj),
+                       data     = as.Date(data,
+                                          '%Y-%m_%d'),
+                       v_total  = as.numeric(v_total),
+                       v_quota  = as.numeric(v_quota),
+                       pl       = as.numeric(pl),
+                       capt     = as.numeric(capt),
+                       resg     = as.numeric(resg),
+                       cotistas = as.numeric(cotistas))
+
   return(diario_f)
   rm(diario_f)
   rm(diario)
@@ -129,14 +152,6 @@ dados_diarios <- function(cnpj, start, end){
 
 }
 
-
-start <- as.Date('2005-01-01')
-end   <- as.Date('2022-03-01')
-cnpj <- c('01.608.573/0001-65', '27.146.328/0001-77')
-
-
-infos <- dados_diarios(cnpj  = cnpj,
-                       start = start,
-                       end   = end)
-
-
+dados_diarios(cnpj  = '01.608.573/0001-65',
+              start = as.Date('2021-03-01'),
+              end   = as.Date('2020-11-01'))
