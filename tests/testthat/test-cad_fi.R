@@ -1,6 +1,6 @@
 test_that("cad_fi", {
-
-  dados_cadastrais <- dadosCVM::cad_fi()
+  library(dadosCVM)
+  dados_cadastrais <- cad_fi()
 
   testthat::expect_s3_class(dados_cadastrais,
                             'data.frame')
