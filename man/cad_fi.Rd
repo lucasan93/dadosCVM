@@ -13,7 +13,3 @@ a data.frame
 This function returns a data.frame containing the latest registration
 data of all funds registered in CVM.
 }
-\examples{
-
-
-}

@@ -10,13 +10,13 @@
 #' @export
 #'
 #' @importFrom magrittr %>%
-#' @examples
+#' @importFrom rlang .data
+#'
 dados_diarios <- function(cnpj, start, end){
 
   if (end <= start && start >= as.Date('2005-01-01')) {
 
-
-
+  # URL in which data from after the threshold date is available
   url1 <- paste0('http://dados.cvm.gov.br',
                  '/dados',
                  '/FI',
@@ -24,50 +24,47 @@ dados_diarios <- function(cnpj, start, end){
                  '/INF_DIARIO',
                  '/DADOS')
 
+  # URL in which data from before the threshold date is available
   url2 <- paste0(url1,
                  '/HIST')
 
+  # Date threshold
   date_threshold <- as.Date('2021-01-01')
 
   diario_f <- data.frame()
 
-
   if (end >= date_threshold) {
-    dados_m <- sort(substr(gsub('-',
-                                '',
-                                seq.Date(max(start,
-                                             as.Date(date_threshold)),
-                                         end,
-                                         by = 'month')),
+
+    dados_m <- sort(substr(gsub('-', '', seq.Date(max(start,
+                                                      as.Date(date_threshold)),
+                                                  end,
+                                                  by = 'month')),
                            1,
                            6),
                     decreasing = TRUE)
 
     for (month in seq_along(dados_m)) {
 
-        temp <- tempfile()
-        utils::download.file(paste0(url1,
-                             '/inf_diario_fi_',
-                             dados_m[month],
-                             '.csv'),
-                      temp)
+      temp <- tempfile()
+      utils::download.file(paste0(url1,
+                                  '/inf_diario_fi_',
+                                  dados_m[month],
+                                  '.csv'),
+                           temp)
 
-        diario <- utils::read.csv(temp,
-                          sep   = ';',
-                          quote = "") %>%
+      diario <- utils::read.csv(temp, sep = ';', quote = "") %>%
           dplyr::select(.data$CNPJ_FUNDO,
-                 .data$DT_COMPTC,
-                 .data$VL_TOTAL,
-                 .data$VL_QUOTA,
-                 .data$VL_PATRIM_LIQ,
-                 .data$CAPTC_DIA,
-                 .data$RESG_DIA,
-                 .data$NR_COTST) %>%
-          dplyr::mutate(DT_COMPTC = as.Date(.data$DT_COMPTC,
-                                     '%Y-%m-%d')) %>%
+                        .data$DT_COMPTC,
+                        .data$VL_TOTAL,
+                        .data$VL_QUOTA,
+                        .data$VL_PATRIM_LIQ,
+                        .data$CAPTC_DIA,
+                        .data$RESG_DIA,
+                        .data$NR_COTST) %>%
+          dplyr::mutate(DT_COMPTC = as.Date(.data$DT_COMPTC, '%Y-%m-%d')) %>%
           dplyr::filter(.data$CNPJ_FUNDO %in% cnpj   &
-                 .data$DT_COMPTC    >= start  &
-                 .data$DT_COMPTC    <= end)
+                        .data$DT_COMPTC    >= start  &
+                        .data$DT_COMPTC    <= end)
 
         diario_f <- rbind(diario,
                           diario_f)
@@ -77,24 +74,16 @@ dados_diarios <- function(cnpj, start, end){
 
   if (start < date_threshold) {
 
-    hist_y <- sort(substr(seq.Date(start,
-                min(end,
+    hist_y <- sort(substr(seq.Date(start, min(end,
                 as.Date(date_threshold - as.difftime(15,
-                                                      unit = 'days'))),
-                              by = 'year'),
-                          1,
-                          4),
+                                                      units = 'days'))),
+                              by = 'year'), 1, 4),
                    decreasing = TRUE)
 
-    hist_m <- sort(substr(gsub('-',
-                               '',
-                               seq.Date(start,
-                        min(end,
+    hist_m <- sort(substr(gsub('-', '', seq.Date(start, min(end,
                         as.Date(date_threshold - as.difftime(15,
-                                                  unit = 'days'))),
-                                        by = 'month')),
-                          1,
-                          6),
+                                                  units = 'days'))),
+                                        by = 'month')), 1, 6),
                    decreasing = TRUE)
 
     for (year in seq_along(hist_y)) {
@@ -106,8 +95,7 @@ dados_diarios <- function(cnpj, start, end){
                            '.zip'),
                     temp)
 
-      months <- hist_m[grepl(pattern = hist_y[year],
-                       substr(hist_m, 1, 4))]
+      months <- hist_m[grepl(pattern = hist_y[year], substr(hist_m, 1, 4))]
 
       for (month in seq_along(months)) {
 
@@ -117,26 +105,22 @@ dados_diarios <- function(cnpj, start, end){
                                '.csv')),
                             sep = ';') %>%
           dplyr::select(.data$CNPJ_FUNDO,
-                 .data$DT_COMPTC,
-                 .data$VL_TOTAL,
-                 .data$VL_QUOTA,
-                 .data$VL_PATRIM_LIQ,
-                 .data$CAPTC_DIA,
-                 .data$RESG_DIA,
-                 .data$NR_COTST) %>%
-          dplyr::mutate(DT_COMPTC = as.Date(.data$DT_COMPTC,
-                                     '%Y-%m-%d')) %>%
+                        .data$DT_COMPTC,
+                        .data$VL_TOTAL,
+                        .data$VL_QUOTA,
+                        .data$VL_PATRIM_LIQ,
+                        .data$CAPTC_DIA,
+                        .data$RESG_DIA,
+                        .data$NR_COTST) %>%
+          dplyr::mutate(DT_COMPTC = as.Date(.data$DT_COMPTC, '%Y-%m-%d')) %>%
           dplyr::filter(.data$CNPJ_FUNDO %in% cnpj   &
-                 .data$DT_COMPTC    >= start  &
-                 .data$DT_COMPTC    <= end)
+                        .data$DT_COMPTC    >= start  &
+                        .data$DT_COMPTC    <= end)
 
         diario_f <- rbind(diario,
                           diario_f)
-
       }
-
     }
-
   }
 
   diario_f <- diario_f %>%
@@ -165,10 +149,8 @@ dados_diarios <- function(cnpj, start, end){
   rm(dados_m)
 
   } else if (end < start) {
-    print('Start date must be before end date.')
+    stop('Start date must be before end date.')
   } else if (start < as.Date('2005-01-01')) {
-
-    print('Minimum date must be 2005-01-01.')
+    stop('Minimum date must be 2005-01-01.')
   }
-
 }
