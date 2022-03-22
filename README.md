@@ -67,8 +67,7 @@ dados_cadastrais <- cad_fi() %>%
                              pl) %>% 
                       arrange(desc(pl)) %>% 
                       slice_head(n = 10) %>% 
-                      mutate(pl = format(pl,
-                                         big.mark = ','))
+                      mutate(pl = format(pl, big.mark = ','))
 
 kable(dados_cadastrais)
 ```
@@ -111,10 +110,10 @@ FI
 1997-01-02
 </td>
 <td style="text-align:left;">
-2022-03-16
+2022-03-17
 </td>
 <td style="text-align:left;">
-161,992,521,081
+161,244,574,149
 </td>
 </tr>
 <tr>
@@ -131,10 +130,10 @@ FI
 2017-05-03
 </td>
 <td style="text-align:left;">
-2022-03-16
+2022-03-17
 </td>
 <td style="text-align:left;">
-139,552,555,270
+139,512,579,135
 </td>
 </tr>
 <tr>
@@ -151,10 +150,10 @@ FI
 2005-09-21
 </td>
 <td style="text-align:left;">
-2022-03-16
+2022-03-17
 </td>
 <td style="text-align:left;">
-122,535,371,859
+122,512,231,279
 </td>
 </tr>
 <tr>
@@ -191,10 +190,10 @@ FI
 1995-10-02
 </td>
 <td style="text-align:left;">
-2022-03-16
+2022-03-17
 </td>
 <td style="text-align:left;">
-95,571,933,959
+95,628,743,908
 </td>
 </tr>
 <tr>
@@ -211,10 +210,10 @@ FI
 1996-12-30
 </td>
 <td style="text-align:left;">
-2022-03-16
+2022-03-17
 </td>
 <td style="text-align:left;">
-94,980,870,025
+95,112,208,914
 </td>
 </tr>
 <tr>
@@ -231,10 +230,10 @@ FI
 2021-09-30
 </td>
 <td style="text-align:left;">
-2022-03-16
+2022-03-17
 </td>
 <td style="text-align:left;">
-68,004,534,472
+68,726,544,019
 </td>
 </tr>
 <tr>
@@ -251,10 +250,10 @@ FI
 2021-09-30
 </td>
 <td style="text-align:left;">
-2022-03-16
+2022-03-17
 </td>
 <td style="text-align:left;">
-68,000,175,320
+68,721,811,115
 </td>
 </tr>
 <tr>
@@ -271,10 +270,10 @@ FI
 2002-07-15
 </td>
 <td style="text-align:left;">
-2022-03-16
+2022-03-17
 </td>
 <td style="text-align:left;">
-63,260,905,203
+61,919,060,605
 </td>
 </tr>
 <tr>
@@ -291,10 +290,10 @@ FI
 2005-08-24
 </td>
 <td style="text-align:left;">
-2022-03-16
+2022-03-17
 </td>
 <td style="text-align:left;">
-55,297,829,993
+55,255,477,853
 </td>
 </tr>
 </tbody>
@@ -306,7 +305,7 @@ The function *dados\_diarios()* downloads daily data (CNPJ, portfolio
 value, share value, equity, withdraws, fund raisings, and number of
 investors) for a specific fund (identified by its CNPJ) between two
 given dates. Note that daily data is only available for funds of type
-‘FI’.
+‘FI’ and that initial date must be greater than 2005-01-01.
 
 ``` r
 library(dadosCVM)
@@ -320,18 +319,13 @@ plot their equity value over time:
 
 ``` r
 dados_diarios(cnpj  = dados_cadastrais$cnpj,
-                      start = as.Date('2005-01-01'),
-                       end   = as.Date('2022-03-01')) %>% 
-      select(data,
-             cnpj,
-             pl) %>% 
+              start = as.Date('2005-01-01'),
+              end   = as.Date('2022-03-01')) %>% 
+      select(data, cnpj, pl) %>% 
       ggplot() +
-      aes(x = data,
-          y = pl,
-          color = cnpj) +
+      aes(x = data, y = pl, color = cnpj) +
       geom_line() +
-      scale_y_continuous(labels = unit_format(unit = "Bi", 
-                                              scale = 1e-9)) +
+      scale_y_continuous(labels = unit_format(unit = "Bi", scale = 1e-9)) +
       xlab('Date') +
       ylab('Equity (BRL)') +
       theme_minimal()

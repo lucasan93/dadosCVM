@@ -61,15 +61,14 @@ dados_cadastrais <- cad_fi() %>%
                              pl) %>% 
                       arrange(desc(pl)) %>% 
                       slice_head(n = 10) %>% 
-                      mutate(pl = format(pl,
-                                         big.mark = ','))
+                      mutate(pl = format(pl, big.mark = ','))
 
 kable(dados_cadastrais)
 ```
 
 ### 2: Obtaining daily data 
 
-The function _dados_diarios()_ downloads daily data (CNPJ, portfolio value, share value, equity, withdraws, fund raisings, and number of investors) for a specific fund (identified by its CNPJ) between two given dates. Note that daily data is only available for funds of type 'FI'.
+The function _dados_diarios()_ downloads daily data (CNPJ, portfolio value, share value, equity, withdraws, fund raisings, and number of investors) for a specific fund (identified by its CNPJ) between two given dates. Note that daily data is only available for funds of type 'FI' and that initial date must be greater than 2005-01-01.
 
 ```{r example2, warning=FALSE, message=FALSE}
 library(dadosCVM)
@@ -82,18 +81,13 @@ Below we obtain data from funds displayed in the previous example and plot their
 
 ```{r}
 dados_diarios(cnpj  = dados_cadastrais$cnpj,
-                      start = as.Date('2005-01-01'),
-                       end   = as.Date('2022-03-01')) %>% 
-      select(data,
-             cnpj,
-             pl) %>% 
+              start = as.Date('2005-01-01'),
+              end   = as.Date('2022-03-01')) %>% 
+      select(data, cnpj, pl) %>% 
       ggplot() +
-      aes(x = data,
-          y = pl,
-          color = cnpj) +
+      aes(x = data, y = pl, color = cnpj) +
       geom_line() +
-      scale_y_continuous(labels = unit_format(unit = "Bi", 
-                                              scale = 1e-9)) +
+      scale_y_continuous(labels = unit_format(unit = "Bi", scale = 1e-9)) +
       xlab('Date') +
       ylab('Equity (BRL)') +
       theme_minimal()
