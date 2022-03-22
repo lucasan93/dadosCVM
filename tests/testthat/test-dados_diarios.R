@@ -4,4 +4,10 @@ test_that("dados_diarios", {
                          start = as.Date('2020-12-01'),
                          end   = as.Date('2021-01-01'))
 
+  testthat::expect_s3_class(daily,
+                            'data.frame')
+
+  testthat::expect_equal(ncol(daily),
+                         8)
+
 })

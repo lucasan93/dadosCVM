@@ -14,7 +14,7 @@
 #'
 dados_diarios <- function(cnpj, start, end){
 
-  if (end <= start && start >= as.Date('2005-01-01')) {
+  if (end >= start && start >= as.Date('2005-01-01')) {
 
   # URL in which data from after the threshold date is available
   url1 <- paste0('http://dados.cvm.gov.br',
