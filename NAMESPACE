@@ -2,5 +2,6 @@
 
 export(cad_fi)
 export(dados_diarios)
+export(dados_fidc)
 importFrom(magrittr,"%>%")
 importFrom(rlang,.data)
