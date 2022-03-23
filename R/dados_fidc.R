@@ -1,14 +1,19 @@
-#' Title
+#' Dados FIDC
 #'
-#' @param cnpj
-#' @param start
-#' @param end
-#' @param table
+#' This function returns a data.frame of FIDCs monthly data from CVM
 #'
-#' @return
+#' @param cnpj a character vector containing the CNPJ of the required funds
+#' @param start a starting date, minimum value is 2005-01-01
+#' @param end an end date
+#' @param table a character value containing a FIDC' table number
+#'
+#' @return data.frame
 #' @export
 #'
-#' @examples
+#' @importFrom magrittr %>%
+#' @importFrom rlang .data
+#'
+#'
 dados_fidc <- function(cnpj, start, end, table){
 
   if (end >= start && start >= as.Date('2013-01-01')) {
@@ -58,7 +63,7 @@ dados_fidc <- function(cnpj, start, end, table){
                                              '.csv')),
                                   sep   = ';',
                                   quote = '') %>%
-                    dplyr::filter(CNPJ_FUNDO %in% cnpj)
+                    dplyr::filter(.data$CNPJ_FUNDO %in% cnpj)
 
           full_fidc <- rbind(fidc,
                              full_fidc)
@@ -94,10 +99,10 @@ dados_fidc <- function(cnpj, start, end, table){
                                              '.csv')),
                                   sep   = ';',
                                   quote = '') %>%
-            dplyr::filter(CNPJ_FUNDO %in% cnpj) %>%
-            dplyr::mutate(DT_COMPTC = as.Date(DT_COMPTC, '%Y-%m-%d')) %>%
-            dplyr::filter(DT_COMPTC >= start,
-                          DT_COMPTC <= end)
+            dplyr::filter(.data$CNPJ_FUNDO %in% cnpj) %>%
+            dplyr::mutate(DT_COMPTC = as.Date(.data$DT_COMPTC, '%Y-%m-%d')) %>%
+            dplyr::filter(.data$DT_COMPTC >= start,
+                          .data$DT_COMPTC <= end)
 
           full_fidc <- rbind(fidc,
                              full_fidc)
