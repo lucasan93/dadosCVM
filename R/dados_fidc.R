@@ -16,7 +16,13 @@
 #'
 dados_fidc <- function(cnpj, start, end, table){
 
-  if (end >= start && start >= as.Date('2013-01-01')) {
+  if(start < as.Date('2013-01-01')){
+    start <- as.Date('2013-01-01')
+    warning('Setting start date to 2013-01-01')
+  }
+
+  if (end >= start) {
+
 
     # URL in which data from after the threshold date is available
     url1 <- paste0('http://dados.cvm.gov.br',
@@ -115,10 +121,9 @@ dados_fidc <- function(cnpj, start, end, table){
     rm(full_fidc)
     rm(fidc)
 
+
   } else if (end < start) {
     stop('Start date must be before end date.')
-  } else if (start < as.Date('2005-01-01')) {
-    stop('Minimum date must be 2013-01-01.')
   }
 
 }
