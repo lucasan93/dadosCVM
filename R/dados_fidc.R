@@ -20,6 +20,10 @@ dados_fidc <- function(cnpj, start, end, table){
     warning('Data unavailable for selected start date. Setting start date to 2013-01-01.')
   }
 
+  if (end < as.Date('2013-01-01')) {
+    warning('Data unavailable for selected end date. Setting end date to 2013-01-01.')
+  }
+
   if (end > (Sys.Date() - lubridate::days(lubridate::day(Sys.Date())))) {
     warning(paste0('Data for end date unavailable. Setting end date to ', Sys.Date() - lubridate::days(lubridate::day(Sys.Date())),'.' ))
   }
@@ -90,7 +94,7 @@ dados_fidc <- function(cnpj, start, end, table){
       if (start < date_threshold) {
 
         hist_y <- sort(substr(seq.Date(max(start, as.Date('2013-01-01')),
-                                      min(end,
+                                      min(max(end, as.Date('2013-01-01')),
                                   as.Date(date_threshold - as.difftime(1,
                                   units = 'days'))),
                                       by = 'year'), 1, 4),
