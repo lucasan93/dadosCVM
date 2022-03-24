@@ -16,14 +16,11 @@
 #'
 dados_fidc <- function(cnpj, start, end, table){
 
-  if(start < as.Date('2013-01-01')){
-    start <- as.Date('2013-01-01')
-    warning('Setting start date to 2013-01-01')
+  if (start < as.Date('2013-01-01')) {
+    warning('Data unavailable for selected start date. Setting start date to 2013-01-01.')
   }
 
   if (end >= start) {
-
-
     # URL in which data from after the threshold date is available
     url1 <- paste0('http://dados.cvm.gov.br',
                    '/dados',
@@ -73,15 +70,13 @@ dados_fidc <- function(cnpj, start, end, table){
 
           full_fidc <- rbind(fidc,
                              full_fidc)
-
-
         }
-
     }
 
       if (start < date_threshold) {
 
-        hist_y <- sort(substr(seq.Date(start, min(end,
+        hist_y <- sort(substr(seq.Date(max(start, as.Date('2013-01-01')),
+                                      min(end,
                                   as.Date(date_threshold - as.difftime(15,
                                   units = 'days'))),
                                       by = 'year'), 1, 4),
@@ -112,15 +107,12 @@ dados_fidc <- function(cnpj, start, end, table){
 
           full_fidc <- rbind(fidc,
                              full_fidc)
-
         }
-
       }
 
     return(full_fidc)
     rm(full_fidc)
     rm(fidc)
-
 
   } else if (end < start) {
     stop('Start date must be before end date.')

@@ -14,7 +14,11 @@
 #'
 dados_diarios <- function(cnpj, start, end){
 
-  if (end >= start && start >= as.Date('2005-01-01')) {
+  if (start < as.Date('2005-01-01')) {
+    warning('Data unavailable for selected start date. Setting start date to 2005-01-01.')
+  }
+
+  if (end >= start) {
 
   # URL in which data from after the threshold date is available
   url1 <- paste0('http://dados.cvm.gov.br',
@@ -74,7 +78,7 @@ dados_diarios <- function(cnpj, start, end){
 
   if (start < date_threshold) {
 
-    hist_y <- sort(substr(seq.Date(start, min(end,
+    hist_y <- sort(substr(seq.Date(max(start, as.Date('2005-01-01')), min(end,
                 as.Date(date_threshold - as.difftime(15,
                                                       units = 'days'))),
                               by = 'year'), 1, 4),
@@ -150,7 +154,6 @@ dados_diarios <- function(cnpj, start, end){
 
   } else if (end < start) {
     stop('Start date must be before end date.')
-  } else if (start < as.Date('2005-01-01')) {
-    stop('Minimum date must be 2005-01-01.')
   }
+
 }
