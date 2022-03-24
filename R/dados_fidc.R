@@ -111,14 +111,16 @@ dados_fidc <- function(cnpj, start, end, table){
 
       }
 
+    return(full_fidc)
+    rm(full_fidc)
+    rm(fidc)
+
   } else if (end < start) {
     stop('Start date must be before end date.')
   } else if (start < as.Date('2005-01-01')) {
     stop('Minimum date must be 2013-01-01.')
   }
 
-  return(full_fidc)
-  rm(full_fidc)
-  rm(fidc)
-
 }
+
+
