@@ -51,14 +51,24 @@ dados_diarios <- function(cnpj, start, end){
                            6),
                     decreasing = TRUE)
 
+    print(paste0('Obtaining data between ',
+                 max(start, as.Date(date_threshold)),
+                 ' and ',
+                 min(end,Sys.Date())))
+
+    prog <- progress::progress_bar$new(total = length(dados_m))
+
     for (month in seq_along(dados_m)) {
+
+      prog$tick()
 
       temp <- tempfile()
       utils::download.file(paste0(url1,
                                   '/inf_diario_fi_',
                                   dados_m[month],
                                   '.csv'),
-                           temp)
+                           temp,
+                           quiet = TRUE)
 
       diario <- utils::read.csv(temp, sep = ';', quote = "") %>%
           dplyr::select(.data$CNPJ_FUNDO,
@@ -79,29 +89,39 @@ dados_diarios <- function(cnpj, start, end){
     }
   }
 
-
   if (start < date_threshold) {
 
     hist_y <- sort(substr(seq.Date(max(start, as.Date('2005-01-01')), min(end,
-                as.Date(date_threshold - as.difftime(15,
-                                                      units = 'days'))),
+                as.Date(date_threshold - as.difftime(1, units = 'days'))),
                               by = 'year'), 1, 4),
                    decreasing = TRUE)
 
-    hist_m <- sort(substr(gsub('-', '', seq.Date(start, min(end,
-                        as.Date(date_threshold - as.difftime(15,
+    hist_m <- sort(substr(gsub('-', '', seq.Date(max(start,as.Date('2005-01-01')),
+                                                 min(max(end, as.Date('2005-01-01')),
+                        as.Date(date_threshold - as.difftime(1,
                                                   units = 'days'))),
                                         by = 'month')), 1, 6),
                    decreasing = TRUE)
 
+    print(paste0('Obtaining data between ',
+                 max(start, as.Date('2005-01-01')),
+                 ' and ',
+                 min(max(end, as.Date('2005-01-01')), Sys.Date())))
+
+    prog <- progress::progress_bar$new(total = length(hist_y))
+
+
     for (year in seq_along(hist_y)) {
+
+      prog$tick()
 
       temp <- tempfile()
       utils::download.file(paste0(url2,
                            '/inf_diario_fi_',
                            hist_y[year],
                            '.zip'),
-                    temp)
+                    temp,
+                    quiet = TRUE)
 
       months <- hist_m[grepl(pattern = hist_y[year], substr(hist_m, 1, 4))]
 
@@ -159,5 +179,4 @@ dados_diarios <- function(cnpj, start, end){
   } else if (end < start) {
     stop('Start date must be before end date.')
   }
-
 }
