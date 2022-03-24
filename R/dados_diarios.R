@@ -45,7 +45,7 @@ dados_diarios <- function(cnpj, start, end){
 
     dados_m <- sort(substr(gsub('-', '', seq.Date(max(start,
                                                       as.Date(date_threshold)),
-                                                  min(end, Sys.Date),
+                                                  min(end, Sys.Date()),
                                                   by = 'month')),
                            1,
                            6),

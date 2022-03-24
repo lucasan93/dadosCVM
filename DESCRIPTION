@@ -18,7 +18,6 @@ BugReports: https://github.com/lucasan93/dadosCVM/issues
 Suggests: 
     testthat (>= 3.0.0),
     stringr,
-    lubridate,
     ggplot2,
     knitr
 Config/testthat/edition: 3

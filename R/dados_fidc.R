@@ -20,8 +20,8 @@ dados_fidc <- function(cnpj, start, end, table){
     warning('Data unavailable for selected start date. Setting start date to 2013-01-01.')
   }
 
-  if (end > (Sys.Date() - days(day(Sys.Date())))) {
-    warning(paste0('Data for end date unavailable. Setting end date to', Sys.Date() - lubridate::days(lubridate::day(Sys.Date())),'.' ))
+  if (end > (Sys.Date() - lubridate::days(lubridate::day(Sys.Date())))) {
+    warning(paste0('Data for end date unavailable. Setting end date to ', Sys.Date() - lubridate::days(lubridate::day(Sys.Date())),'.' ))
   }
 
 
@@ -121,7 +121,5 @@ dados_fidc <- function(cnpj, start, end, table){
   } else if (end < start) {
     stop('Start date must be before end date.')
   }
-
 }
-
 
