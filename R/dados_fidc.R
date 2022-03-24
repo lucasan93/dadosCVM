@@ -45,6 +45,8 @@ dados_fidc <- function(cnpj, start, end, table){
 
     if (end >= date_threshold) {
 
+
+
       dados_m <- sort(substr(gsub('-', '', seq.Date(max(start,
                                                         as.Date(date_threshold)),
                                                     min(end, (Sys.Date() - lubridate::days(lubridate::day(Sys.Date())))),
@@ -53,14 +55,22 @@ dados_fidc <- function(cnpj, start, end, table){
                              6),
                       decreasing = TRUE)
 
+      print(paste0('Obtaining data between ', max(start, as.Date(date_threshold)), ' and ',  min(end, (Sys.Date() - lubridate::days(lubridate::day(Sys.Date()))))))
+
+
+      prog <- progress::progress_bar$new(total = length(dados_m))
+
         for (month in seq_along(dados_m)) {
+
+          prog$tick()
 
           temp <- tempfile()
           utils::download.file(paste0(url1,
                                       '/inf_mensal_fidc_',
                                       dados_m[month],
                                       '.zip'),
-                               temp)
+                               temp,
+                               quiet = TRUE)
 
           fidc <- utils::read.csv(unz(temp,
                                       paste0('inf_mensal_fidc_tab_',
@@ -81,20 +91,31 @@ dados_fidc <- function(cnpj, start, end, table){
 
         hist_y <- sort(substr(seq.Date(max(start, as.Date('2013-01-01')),
                                       min(end,
-                                  as.Date(date_threshold - as.difftime(15,
+                                  as.Date(date_threshold - as.difftime(1,
                                   units = 'days'))),
                                       by = 'year'), 1, 4),
                        decreasing = TRUE)
 
+        print(paste0('Obtaining data between ',
+                     max(start, as.Date('2013-01-01')),
+                     ' and ',
+                     min(end,
+                         as.Date(date_threshold - as.difftime(1,
+                                                              units = 'days')))))
+
+        prog <- progress::progress_bar$new(total = length(hist_y))
 
         for (year in seq_along(hist_y)) {
+
+          prog$tick()
 
           temp <- tempfile()
           utils::download.file(paste0(url2,
                                       '/inf_mensal_fidc_',
                                       hist_y[year],
                                       '.zip'),
-                               temp)
+                               temp,
+                               quiet = TRUE)
 
           fidc <- utils::read.csv(unz(temp,
                                       paste0('inf_mensal_fidc_tab_',
@@ -122,4 +143,3 @@ dados_fidc <- function(cnpj, start, end, table){
     stop('Start date must be before end date.')
   }
 }
-
