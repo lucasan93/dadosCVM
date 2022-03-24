@@ -18,6 +18,10 @@ dados_diarios <- function(cnpj, start, end){
     warning('Data unavailable for selected start date. Setting start date to 2005-01-01.')
   }
 
+  if (end > Sys.Date()) {
+    warning(paste0('End date cant be in the future. Setting end date to', Sys.Date(),'.' ))
+  }
+
   if (end >= start) {
 
   # URL in which data from after the threshold date is available
@@ -41,7 +45,7 @@ dados_diarios <- function(cnpj, start, end){
 
     dados_m <- sort(substr(gsub('-', '', seq.Date(max(start,
                                                       as.Date(date_threshold)),
-                                                  end,
+                                                  min(end, Sys.Date),
                                                   by = 'month')),
                            1,
                            6),

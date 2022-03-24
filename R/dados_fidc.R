@@ -20,6 +20,11 @@ dados_fidc <- function(cnpj, start, end, table){
     warning('Data unavailable for selected start date. Setting start date to 2013-01-01.')
   }
 
+  if (end > (Sys.Date() - days(day(Sys.Date())))) {
+    warning(paste0('Data for end date unavailable. Setting end date to', Sys.Date() - lubridate::days(lubridate::day(Sys.Date())),'.' ))
+  }
+
+
   if (end >= start) {
     # URL in which data from after the threshold date is available
     url1 <- paste0('http://dados.cvm.gov.br',
@@ -42,12 +47,11 @@ dados_fidc <- function(cnpj, start, end, table){
 
       dados_m <- sort(substr(gsub('-', '', seq.Date(max(start,
                                                         as.Date(date_threshold)),
-                                                    end,
+                                                    min(end, (Sys.Date() - lubridate::days(lubridate::day(Sys.Date())))),
                                                     by = 'month')),
                              1,
                              6),
                       decreasing = TRUE)
-
 
         for (month in seq_along(dados_m)) {
 
