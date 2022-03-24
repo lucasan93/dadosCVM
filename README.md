@@ -15,15 +15,16 @@ Main goals/ideas are descripted below:
 
 -   cad\_fi(): Download the latest Registration Data (‘Dados
     Cadastrais’) available on CVM at
-    <http://dados.cvm.gov.br/dados/FI/CAD/DADOS/> - 100%;
+    <http://dados.cvm.gov.br/dados/FI/CAD/DADOS/> - 90%;
 -   dados\_diarios(): Download the daily fund information (CNPJ, fund
     raisings and withdraws, investors’ amount, equity value, share
     value) of selected funds between two dates. Data is available at
     <http://dados.cvm.gov.br/dados/FI/DOC/INF_DIARIO/DADOS/> - under
     development;
--   fidc(): Develop a function that downloads monthly FIDC data between
-    two dates from a selected table of the FIDC files located at
-    <http://dados.cvm.gov.br/dados/FIDC/DOC/INF_MENSAL/DADOS/> - 0%;
+-   dados\_fidc(): Develop a function that downloads monthly FIDC data
+    between two dates from a specified table of the FIDC files located
+    at <http://dados.cvm.gov.br/dados/FIDC/DOC/INF_MENSAL/DADOS/> -
+    under development;
 -   simpl\_names(): Develop a function that simplifies funds names
     (i.e. transforms ‘FUNDO DE INVESTIMENTO EM DIREITOS CREDITORIOS’ to
     ‘FIDC’) - 0%.
@@ -110,10 +111,10 @@ FI
 1997-01-02
 </td>
 <td style="text-align:left;">
-2022-03-17
+2022-03-18
 </td>
 <td style="text-align:left;">
-161,244,574,149
+159,146,013,618
 </td>
 </tr>
 <tr>
@@ -130,10 +131,10 @@ FI
 2017-05-03
 </td>
 <td style="text-align:left;">
-2022-03-17
+2022-03-18
 </td>
 <td style="text-align:left;">
-139,512,579,135
+137,605,400,390
 </td>
 </tr>
 <tr>
@@ -150,10 +151,10 @@ FI
 2005-09-21
 </td>
 <td style="text-align:left;">
-2022-03-17
+2022-03-18
 </td>
 <td style="text-align:left;">
-122,512,231,279
+122,462,409,545
 </td>
 </tr>
 <tr>
@@ -190,10 +191,10 @@ FI
 1995-10-02
 </td>
 <td style="text-align:left;">
-2022-03-17
+2022-03-18
 </td>
 <td style="text-align:left;">
-95,628,743,908
+95,685,797,768
 </td>
 </tr>
 <tr>
@@ -210,10 +211,10 @@ FI
 1996-12-30
 </td>
 <td style="text-align:left;">
-2022-03-17
+2022-03-18
 </td>
 <td style="text-align:left;">
-95,112,208,914
+95,219,727,299
 </td>
 </tr>
 <tr>
@@ -230,10 +231,10 @@ FI
 2021-09-30
 </td>
 <td style="text-align:left;">
-2022-03-17
+2022-03-18
 </td>
 <td style="text-align:left;">
-68,726,544,019
+68,830,385,416
 </td>
 </tr>
 <tr>
@@ -250,10 +251,10 @@ FI
 2021-09-30
 </td>
 <td style="text-align:left;">
-2022-03-17
+2022-03-18
 </td>
 <td style="text-align:left;">
-68,721,811,115
+68,825,607,727
 </td>
 </tr>
 <tr>
@@ -270,10 +271,10 @@ FI
 2002-07-15
 </td>
 <td style="text-align:left;">
-2022-03-17
+2022-03-18
 </td>
 <td style="text-align:left;">
-61,919,060,605
+60,745,834,303
 </td>
 </tr>
 <tr>
@@ -290,10 +291,10 @@ FI
 2005-08-24
 </td>
 <td style="text-align:left;">
-2022-03-17
+2022-03-18
 </td>
 <td style="text-align:left;">
-55,255,477,853
+55,233,768,486
 </td>
 </tr>
 </tbody>
@@ -303,7 +304,7 @@ FI
 
 The function *dados\_diarios()* downloads daily data (CNPJ, portfolio
 value, share value, equity, withdraws, fund raisings, and number of
-investors) for a specific fund (identified by its CNPJ) between two
+investors) for specifics fund (identified by theis CNPJs) between two
 given dates. Note that daily data is only available for funds of type
 ‘FI’ and that initial date must be greater than 2005-01-01.
 
@@ -332,3 +333,77 @@ dados_diarios(cnpj  = dados_cadastrais$cnpj,
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+
+### 3: Obtaining FIDC’s monthly portfolio
+
+The function *dados\_fidc()* downloads monthly data for a group of funds
+(identified by theis CNPJs) between two given dates and for a specified
+database (identified in CVM’s FIDC’s META file) out of 16 different
+databases. Initial date must be greater than 2013-01-01.
+
+**This function is currently under development. I’m working on
+simplifying column names and adding the opting to pivot the data.frame
+format from wide to long.**
+
+``` r
+library(dadosCVM)
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(scales)
+```
+
+First, let’s select the top-10 FIDCs in operation with the highest
+equity value and extract their CNPJs and the operations’ start date
+using the *cad\_fi* function:
+
+``` r
+infos <- cad_fi() %>% 
+          filter(situacao == 'EM FUNCIONAMENTO NORMAL',
+                 tipo     == 'FIDC') %>% 
+          arrange(desc(pl)) %>% 
+          slice_head(n = 10) %>% 
+          select(cnpj,
+                 inicio_atv)
+```
+
+Now we obtain the database which provides us with information about the
+top-10 funds’ aggregated portfolio. CVM has a ‘META’ file describing the
+content of each FIDC database. A quick look at it and we find that the
+one we are interested in is the ‘II’ table. Soon the package will
+provide a reference database so this search can be done quicker. Note
+that although the oldest fund started in 2009, the function
+automatically set the start date to 2013-01-01 since there’s no data
+prior to that date.
+
+``` r
+dados_fidc(cnpj  = infos$cnpj,
+           start = min(infos$inicio_atv),
+           end   = as.Date('2022-02-01'),
+           table = 'II') %>% 
+        replace(is.na(.), 0) %>% 
+        select_if(~ !is.numeric(.) || sum(.) != 0) %>% 
+        select(DT_COMPTC,
+               TAB_II_A_VL_INDUST,
+               TAB_II_B_VL_IMOBIL,
+               TAB_II_C_VL_COMERC,
+               TAB_II_D_VL_SERV,
+               TAB_II_F_VL_FINANC,
+               TAB_II_G_VL_CREDITO,
+               TAB_II_I_VL_SETOR_PUBLICO,
+               TAB_II_J_VL_JUDICIAL) %>% 
+        pivot_longer(!DT_COMPTC,
+                     names_to  = 'Categoria',
+                     values_to = 'value') %>% 
+        ggplot() +
+        aes(x = DT_COMPTC, y = value, fill = Categoria) +
+        geom_bar(position = 'stack', stat     = 'identity') +
+        scale_y_continuous(labels = unit_format(unit = "Bi", scale = 1e-9)) +
+        xlab('Date') +
+        ylab('Value (BRL)') +
+        theme_minimal()
+#> Warning in dados_fidc(cnpj = infos$cnpj, start = min(infos$inicio_atv), :
+#> Setting start date to 2013-01-01
+```
+
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
