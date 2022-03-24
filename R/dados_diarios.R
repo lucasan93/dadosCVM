@@ -19,7 +19,9 @@ dados_diarios <- function(cnpj, start, end){
   }
 
   if (end > Sys.Date()) {
-    warning(paste0('End date cant be in the future. Setting end date to', Sys.Date(),'.' ))
+    warning(paste0('End date cant be in the future. Setting end date to',
+                   Sys.Date(),
+                   '.' ))
   }
 
   if (end >= start) {
