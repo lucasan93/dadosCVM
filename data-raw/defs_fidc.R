@@ -3,3 +3,5 @@
 defs_fidcs <- read.csv("C:/Users/lmarin/Desktop/Research/Arquivos R/concorrentes/defs_fidcs.txt")
 
 usethis::use_data(defs_fidcs, overwrite = TRUE)
+
+View(defs_fidcs)
