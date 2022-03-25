@@ -26,6 +26,8 @@ dados_diarios <- function(cnpj, start, end){
 
   if (end >= start) {
 
+  # Nomes das Variáveis
+
   # URL in which data from after the threshold date is available
   url1 <- paste0('http://dados.cvm.gov.br',
                  '/dados',
