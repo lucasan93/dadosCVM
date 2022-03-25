@@ -376,7 +376,9 @@ one we are interested in is the ‘II’ table. Soon the package will
 provide a reference database so this search can be done quicker. Note
 that although the oldest fund started in 2009, the function
 automatically set the start date to 2013-01-01 since there’s no data
-prior to that date..
+prior to that date. Note that the function pivots the CVM databases to
+longer and provides two identification columns (‘segment’ and ‘item’),
+which greatly facilitates analysis and plots.
 
 ``` r
 dados_fidc(cnpj  = infos$cnpj,
@@ -399,3 +401,45 @@ dados_fidc(cnpj  = infos$cnpj,
 ```
 
 <img src="man/figures/README-segments-1.png" width="100%" />
+
+If we are interested in analyzing the items within a specific segment,
+let’s say ‘financeiro’, we can plot the following:
+
+``` r
+dados_fidc(cnpj  = infos$cnpj,
+           start = min(infos$inicio_atv),
+           end   = as.Date('2022-02-01'),
+           table = 'II') %>% 
+        replace(is.na(.), 0) %>% 
+        filter(value > 0, segment == 'financeiro') %>% 
+        group_by(data, item) %>% 
+        summarise(value = sum(value)) %>% 
+        ggplot() +
+        aes(x = data, y = value, fill = item) +
+        geom_bar(position = 'stack', stat     = 'identity') +
+        scale_y_continuous(labels = unit_format(unit = "Bi", scale = 1e-9)) +
+        xlab('Date') +
+        ylab('Value (BRL)') +
+        theme_minimal()
+#> [1] "Obtaining data between 2019-01-01 and 2022-02-01"
+#> [1] "Obtaining data between 2013-01-01 and 2018-12-31"
+```
+
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+
+And in order to verify how the segments and its items are organized
+based on their CVM categories, take a look at the *defs\_fidc* database
+within the package. **Note that the observations in which item ==
+‘total’ are excluded when running the *dados\_fidc()* function in order
+to avoid double counting.**
+
+``` r
+head(defs_fidcs)
+#>              category     segment        item
+#> 1  TAB_II_VL_CARTEIRA    carteira       total
+#> 2  TAB_II_A_VL_INDUST  industrial  industrial
+#> 3  TAB_II_B_VL_IMOBIL imobiliario imobiliario
+#> 4  TAB_II_C_VL_COMERC   comercial       total
+#> 5 TAB_II_C1_VL_COMERC   comercial   comercial
+#> 6 TAB_II_C2_VL_VAREJO   comercial      varejo
+```

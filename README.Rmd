@@ -119,7 +119,7 @@ infos <- cad_fi() %>%
                  inicio_atv)
 ```
 
-Now we obtain the database which provides us with information about the top-10 funds' aggregated portfolio. CVM has a 'META' file describing the content of each FIDC database. A quick look at it and we find that the one we are interested in is the 'II' table. Soon the package will provide a reference database so this search can be done quicker. Note that although the oldest fund started in 2009, the function automatically set the start date to 2013-01-01 since there's no data prior to that date..
+Now we obtain the database which provides us with information about the top-10 funds' aggregated portfolio. CVM has a 'META' file describing the content of each FIDC database. A quick look at it and we find that the one we are interested in is the 'II' table. Soon the package will provide a reference database so this search can be done quicker. Note that although the oldest fund started in 2009, the function automatically set the start date to 2013-01-01 since there's no data prior to that date. Note that the function pivots the CVM databases to longer and provides two identification columns ('segment' and 'item'), which greatly facilitates analysis and plots.
 
 ```{r segments, warning=FALSE, message=FALSE}
 dados_fidc(cnpj  = infos$cnpj,
@@ -137,6 +137,32 @@ dados_fidc(cnpj  = infos$cnpj,
         xlab('Date') +
         ylab('Value (BRL)') +
         theme_minimal()
+```
+
+If we are interested in analyzing the items within a specific segment, let's say 'financeiro', we can plot the following:
+
+```{r warning=FALSE, message=FALSE}
+dados_fidc(cnpj  = infos$cnpj,
+           start = min(infos$inicio_atv),
+           end   = as.Date('2022-02-01'),
+           table = 'II') %>% 
+        replace(is.na(.), 0) %>% 
+        filter(value > 0, segment == 'financeiro') %>% 
+        group_by(data, item) %>% 
+        summarise(value = sum(value)) %>% 
+        ggplot() +
+        aes(x = data, y = value, fill = item) +
+        geom_bar(position = 'stack', stat     = 'identity') +
+        scale_y_continuous(labels = unit_format(unit = "Bi", scale = 1e-9)) +
+        xlab('Date') +
+        ylab('Value (BRL)') +
+        theme_minimal()
+```
+
+And in order to verify how the segments and its items are organized based on their CVM categories, take a look at the _defs_fidc_ database within the package. **Note that the observations in which item == 'total' are excluded when running the _dados_fidc()_ function in order to avoid double counting.**
+
+```{r}
+head(defs_fidcs)
 ```
 
 
