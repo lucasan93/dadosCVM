@@ -84,7 +84,10 @@ dados_fidc <- function(cnpj, start, end, table){
                                              '.csv')),
                                   sep   = ';',
                                   quote = '') %>%
-                    dplyr::filter(.data$CNPJ_FUNDO %in% cnpj)
+                    dplyr::filter(.data$CNPJ_FUNDO %in% cnpj) %>%
+                    tidyr::pivot_longer(cols = tidyr::starts_with('TAB_'),
+                                        names_to = 'category',
+                                        values_to = 'value')
 
           full_fidc <- rbind(fidc,
                              full_fidc)
@@ -132,12 +135,38 @@ dados_fidc <- function(cnpj, start, end, table){
             dplyr::filter(.data$CNPJ_FUNDO %in% cnpj) %>%
             dplyr::mutate(DT_COMPTC = as.Date(.data$DT_COMPTC, '%Y-%m-%d')) %>%
             dplyr::filter(.data$DT_COMPTC >= start,
-                          .data$DT_COMPTC <= end)
+                          .data$DT_COMPTC <= end) %>%
+            tidyr::pivot_longer(cols = tidyr::starts_with('TAB_'),
+                                    names_to = 'category',
+                                    values_to = 'value')
+
 
           full_fidc <- rbind(fidc,
                              full_fidc)
         }
       }
+
+    full_fidc <- full_fidc %>%
+                    dplyr::left_join(dadosCVM::defs_fidcs,
+                              by = 'category') %>%
+                    dplyr::filter(.data$item != 'total') %>%
+                    dplyr::rename(cnpj = .data$CNPJ_FUNDO,
+                           nome = .data$DENOM_SOCIAL,
+                           data = .data$DT_COMPTC) %>%
+                    dplyr::select(.data$data,
+                           .data$cnpj,
+                           .data$nome,
+                           .data$category,
+                           .data$segment,
+                           .data$item,
+                           .data$value) %>%
+                    dplyr::mutate(data = as.Date(.data$data, '%Y-%m_%d'),
+                           cnpj = as.character(.data$cnpj),
+                           nome = as.character(.data$nome),
+                           category = as.factor(.data$category),
+                           segment = as.factor(.data$segment),
+                           item    = as.factor(.data$item),
+                           value   = as.numeric(.data$value))
 
     return(full_fidc)
     rm(full_fidc)
@@ -147,3 +176,4 @@ dados_fidc <- function(cnpj, start, end, table){
     stop('Start date must be before end date.')
   }
 }
+
