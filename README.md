@@ -111,10 +111,10 @@ FI
 1997-01-02
 </td>
 <td style="text-align:left;">
-2022-03-18
+2022-03-22
 </td>
 <td style="text-align:left;">
-159,146,013,618
+159,950,625,723
 </td>
 </tr>
 <tr>
@@ -131,10 +131,10 @@ FI
 2017-05-03
 </td>
 <td style="text-align:left;">
-2022-03-18
+2022-03-22
 </td>
 <td style="text-align:left;">
-137,605,400,390
+137,512,077,269
 </td>
 </tr>
 <tr>
@@ -151,10 +151,10 @@ FI
 2005-09-21
 </td>
 <td style="text-align:left;">
-2022-03-18
+2022-03-22
 </td>
 <td style="text-align:left;">
-122,462,409,545
+122,546,008,528
 </td>
 </tr>
 <tr>
@@ -179,26 +179,6 @@ FIP
 </tr>
 <tr>
 <td style="text-align:left;">
-00.822.055/0001-87
-</td>
-<td style="text-align:left;">
-Fundo de Renda Fixa
-</td>
-<td style="text-align:left;">
-FI
-</td>
-<td style="text-align:left;">
-1995-10-02
-</td>
-<td style="text-align:left;">
-2022-03-18
-</td>
-<td style="text-align:left;">
-95,685,797,768
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
 01.597.187/0001-15
 </td>
 <td style="text-align:left;">
@@ -211,10 +191,30 @@ FI
 1996-12-30
 </td>
 <td style="text-align:left;">
-2022-03-18
+2022-03-22
 </td>
 <td style="text-align:left;">
-95,219,727,299
+95,456,455,653
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+00.822.055/0001-87
+</td>
+<td style="text-align:left;">
+Fundo de Renda Fixa
+</td>
+<td style="text-align:left;">
+FI
+</td>
+<td style="text-align:left;">
+1995-10-02
+</td>
+<td style="text-align:left;">
+2022-03-22
+</td>
+<td style="text-align:left;">
+94,696,631,319
 </td>
 </tr>
 <tr>
@@ -231,10 +231,10 @@ FI
 2021-09-30
 </td>
 <td style="text-align:left;">
-2022-03-18
+2022-03-22
 </td>
 <td style="text-align:left;">
-68,830,385,416
+71,498,306,598
 </td>
 </tr>
 <tr>
@@ -251,10 +251,10 @@ FI
 2021-09-30
 </td>
 <td style="text-align:left;">
-2022-03-18
+2022-03-22
 </td>
 <td style="text-align:left;">
-68,825,607,727
+71,493,468,680
 </td>
 </tr>
 <tr>
@@ -271,10 +271,10 @@ FI
 2002-07-15
 </td>
 <td style="text-align:left;">
-2022-03-18
+2022-03-22
 </td>
 <td style="text-align:left;">
-60,745,834,303
+60,351,083,083
 </td>
 </tr>
 <tr>
@@ -291,10 +291,10 @@ FI
 2005-08-24
 </td>
 <td style="text-align:left;">
-2022-03-18
+2022-03-22
 </td>
 <td style="text-align:left;">
-55,233,768,486
+55,217,215,452
 </td>
 </tr>
 </tbody>
@@ -330,6 +330,8 @@ dados_diarios(cnpj  = dados_cadastrais$cnpj,
       xlab('Date') +
       ylab('Equity (BRL)') +
       theme_minimal()
+#> [1] "Obtaining data between 2021-01-01 and 2022-03-01"
+#> [1] "Obtaining data between 2005-01-01 and 2022-03-01"
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
@@ -382,28 +384,17 @@ dados_fidc(cnpj  = infos$cnpj,
            end   = as.Date('2022-02-01'),
            table = 'II') %>% 
         replace(is.na(.), 0) %>% 
-        select_if(~ !is.numeric(.) || sum(.) != 0) %>% 
-        select(DT_COMPTC,
-               TAB_II_A_VL_INDUST,
-               TAB_II_B_VL_IMOBIL,
-               TAB_II_C_VL_COMERC,
-               TAB_II_D_VL_SERV,
-               TAB_II_F_VL_FINANC,
-               TAB_II_G_VL_CREDITO,
-               TAB_II_I_VL_SETOR_PUBLICO,
-               TAB_II_J_VL_JUDICIAL) %>% 
-        pivot_longer(!DT_COMPTC,
-                     names_to  = 'Categoria',
-                     values_to = 'value') %>% 
+        group_by(data, segment) %>% 
+        summarise(value = sum(value)) %>% 
         ggplot() +
-        aes(x = DT_COMPTC, y = value, fill = Categoria) +
+        aes(x = data, y = value, fill = segment) +
         geom_bar(position = 'stack', stat     = 'identity') +
         scale_y_continuous(labels = unit_format(unit = "Bi", scale = 1e-9)) +
         xlab('Date') +
         ylab('Value (BRL)') +
         theme_minimal()
-#> Warning in dados_fidc(cnpj = infos$cnpj, start = min(infos$inicio_atv), :
-#> Setting start date to 2013-01-01
+#> [1] "Obtaining data between 2019-01-01 and 2022-02-01"
+#> [1] "Obtaining data between 2013-01-01 and 2018-12-31"
 ```
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />

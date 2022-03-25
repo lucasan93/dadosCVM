@@ -121,31 +121,21 @@ infos <- cad_fi() %>%
 
 Now we obtain the database which provides us with information about the top-10 funds' aggregated portfolio. CVM has a 'META' file describing the content of each FIDC database. A quick look at it and we find that the one we are interested in is the 'II' table. Soon the package will provide a reference database so this search can be done quicker. Note that although the oldest fund started in 2009, the function automatically set the start date to 2013-01-01 since there's no data prior to that date.
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 dados_fidc(cnpj  = infos$cnpj,
            start = min(infos$inicio_atv),
            end   = as.Date('2022-02-01'),
            table = 'II') %>% 
         replace(is.na(.), 0) %>% 
-        select_if(~ !is.numeric(.) || sum(.) != 0) %>% 
-        select(DT_COMPTC,
-               TAB_II_A_VL_INDUST,
-               TAB_II_B_VL_IMOBIL,
-               TAB_II_C_VL_COMERC,
-               TAB_II_D_VL_SERV,
-               TAB_II_F_VL_FINANC,
-               TAB_II_G_VL_CREDITO,
-               TAB_II_I_VL_SETOR_PUBLICO,
-               TAB_II_J_VL_JUDICIAL) %>% 
-        pivot_longer(!DT_COMPTC,
-                     names_to  = 'Categoria',
-                     values_to = 'value') %>% 
+        group_by(data, segment) %>% 
+        summarise(value = sum(value)) %>% 
         ggplot() +
-        aes(x = DT_COMPTC, y = value, fill = Categoria) +
+        aes(x = data, y = value, fill = segment) +
         geom_bar(position = 'stack', stat     = 'identity') +
         scale_y_continuous(labels = unit_format(unit = "Bi", scale = 1e-9)) +
         xlab('Date') +
         ylab('Value (BRL)') +
         theme_minimal()
 ```
+
 
