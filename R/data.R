@@ -10,3 +10,15 @@
 #'   }
 "defs_fidcs"
 
+#' CVM FIDC's databases descriptions
+#'
+#' A dataset containing the description of the 16 available databases of FIDCs
+#'
+#' @format A data frame with 53940 rows and 10 variables:
+#' \describe{
+#'   \item{tabela}{table's id}
+#'   \item{conteudo}{database's content}
+#'   }
+"tabs_fidcs"
+
+
