@@ -376,7 +376,7 @@ one we are interested in is the ‘II’ table. Soon the package will
 provide a reference database so this search can be done quicker. Note
 that although the oldest fund started in 2009, the function
 automatically set the start date to 2013-01-01 since there’s no data
-prior to that date.
+prior to that date..
 
 ``` r
 dados_fidc(cnpj  = infos$cnpj,

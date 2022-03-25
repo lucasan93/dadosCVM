@@ -119,7 +119,7 @@ infos <- cad_fi() %>%
                  inicio_atv)
 ```
 
-Now we obtain the database which provides us with information about the top-10 funds' aggregated portfolio. CVM has a 'META' file describing the content of each FIDC database. A quick look at it and we find that the one we are interested in is the 'II' table. Soon the package will provide a reference database so this search can be done quicker. Note that although the oldest fund started in 2009, the function automatically set the start date to 2013-01-01 since there's no data prior to that date.
+Now we obtain the database which provides us with information about the top-10 funds' aggregated portfolio. CVM has a 'META' file describing the content of each FIDC database. A quick look at it and we find that the one we are interested in is the 'II' table. Soon the package will provide a reference database so this search can be done quicker. Note that although the oldest fund started in 2009, the function automatically set the start date to 2013-01-01 since there's no data prior to that date..
 
 ```{r warning=FALSE, message=FALSE}
 dados_fidc(cnpj  = infos$cnpj,
