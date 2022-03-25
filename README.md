@@ -384,6 +384,7 @@ dados_fidc(cnpj  = infos$cnpj,
            end   = as.Date('2022-02-01'),
            table = 'II') %>% 
         replace(is.na(.), 0) %>% 
+        filter(value > 0) %>% 
         group_by(data, segment) %>% 
         summarise(value = sum(value)) %>% 
         ggplot() +
@@ -397,4 +398,4 @@ dados_fidc(cnpj  = infos$cnpj,
 #> [1] "Obtaining data between 2013-01-01 and 2018-12-31"
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+<img src="man/figures/README-segments-1.png" width="100%" />
