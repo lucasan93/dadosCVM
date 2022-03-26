@@ -151,22 +151,22 @@ dados_fidc <- function(cnpj, start, end, table){
                               by = 'category') %>%
                     dplyr::filter(.data$item != 'total') %>%
                     dplyr::rename(cnpj = .data$CNPJ_FUNDO,
-                           nome = .data$DENOM_SOCIAL,
-                           data = .data$DT_COMPTC) %>%
+                                  nome = .data$DENOM_SOCIAL,
+                                  data = .data$DT_COMPTC) %>%
                     dplyr::select(.data$data,
-                           .data$cnpj,
-                           .data$nome,
-                           .data$category,
-                           .data$segment,
-                           .data$item,
-                           .data$value) %>%
-                    dplyr::mutate(data = as.Date(.data$data, '%Y-%m_%d'),
-                           cnpj = as.character(.data$cnpj),
-                           nome = as.character(.data$nome),
-                           category = as.factor(.data$category),
-                           segment = as.factor(.data$segment),
-                           item    = as.factor(.data$item),
-                           value   = as.numeric(.data$value))
+                                  .data$cnpj,
+                                  .data$nome,
+                                  .data$category,
+                                  .data$segment,
+                                  .data$item,
+                                  .data$value) %>%
+                    dplyr::mutate(data    = as.Date(.data$data, '%Y-%m-%d'),
+                                  cnpj     = as.character(.data$cnpj),
+                                  nome     = as.character(.data$nome),
+                                  category = as.factor(.data$category),
+                                  segment  = as.factor(.data$segment),
+                                  item     = as.factor(.data$item),
+                                  value    = as.numeric(.data$value))
 
     return(full_fidc)
     rm(full_fidc)
