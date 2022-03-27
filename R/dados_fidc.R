@@ -181,7 +181,10 @@ dados_fidc <- function(cnpj, start, end, table){
                       category = as.factor(.data$category),
                       segment  = as.factor(.data$segment),
                       class    = as.factor(.data$class),
-                      item     = as.factor(.data$item))
+                      item     = as.factor(.data$item)) %>%
+        dplyr::mutate(value = dplyr::case_when(category == 'TAB_I2A11_VL_REDUCAO_RECUP' ~
+                                          -value,
+                                        TRUE ~ value))
 
     }
 
