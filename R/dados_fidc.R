@@ -171,6 +171,7 @@ dados_fidc <- function(cnpj, start, end, table){
                       .data$cot_int,
                       .data$exclusivo,
                       .data$category,
+                      .data$base,
                       .data$segment,
                       .data$class,
                       .data$item,
@@ -179,6 +180,7 @@ dados_fidc <- function(cnpj, start, end, table){
                       cnpj     = as.character(.data$cnpj),
                       nome     = as.character(.data$nome),
                       category = as.factor(.data$category),
+                      base     = as.factor(.data$base),
                       segment  = as.factor(.data$segment),
                       class    = as.factor(.data$class),
                       item     = as.factor(.data$item)) %>%
@@ -198,3 +200,4 @@ dados_fidc <- function(cnpj, start, end, table){
     stop('Start date must be before end date.')
   }
 }
+

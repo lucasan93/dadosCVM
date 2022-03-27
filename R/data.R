@@ -7,6 +7,7 @@
 #'   \item{category}{variable name in CVM FIDCs databases}
 #'   \item{table}{table in CVM FIDCs database}
 #'   \item{id}{id in CVM FIDCs database}
+#'   \item{base}{base in CVM FIDCs database}
 #'   \item{segment}{category's description}
 #'   \item{class}{category's class}
 #'   \item{item}{sub items of categorys when needed}
