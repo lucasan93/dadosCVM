@@ -5,7 +5,10 @@
 #' @format A data frame with 53940 rows and 10 variables:
 #' \describe{
 #'   \item{category}{variable name in CVM FIDCs databases}
+#'   \item{table}{table in CVM FIDCs database}
+#'   \item{id}{id in CVM FIDCs database}
 #'   \item{segment}{category's description}
+#'   \item{class}{category's class}
 #'   \item{item}{sub items of categorys when needed}
 #'   }
 "defs_fidcs"

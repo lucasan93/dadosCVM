@@ -9,6 +9,6 @@ test_that("dados_fidc", {
                             'data.frame')
 
   testthat::expect_equal(ncol(fidc),
-                         17)
+                         13)
 
 })

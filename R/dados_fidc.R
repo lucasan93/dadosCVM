@@ -161,11 +161,7 @@ dados_fidc <- function(cnpj, start, end, table){
                       adm_cnpj   = .data$CNPJ_ADMIN,
                       condominio = .data$CONDOM,
                       cot_int    = .data$COTST_INTERESSE,
-                      exclusivo  = .data$FUNDO_EXCLUSIVO,
-                      prazo_conv = .data$PRAZO_CONVERSAO_COTA,
-                      prazo_resg = .data$PRAZO_PAGTO_RESGATE,
-                      tp_conv    = .data$TP_PRAZO_CONVERSAO_COTA,
-                      tp_resg    = .data$TP_PRAZO_PAGTO_RESGATE) %>%
+                      exclusivo  = .data$FUNDO_EXCLUSIVO) %>%
         dplyr::select(.data$data,
                       .data$cnpj,
                       .data$nome,
@@ -174,10 +170,6 @@ dados_fidc <- function(cnpj, start, end, table){
                       .data$condominio,
                       .data$cot_int,
                       .data$exclusivo,
-                      .data$prazo_conv,
-                      .data$prazo_resg,
-                      .data$tp_conv,
-                      .data$tp_resg,
                       .data$category,
                       .data$segment,
                       .data$class,
