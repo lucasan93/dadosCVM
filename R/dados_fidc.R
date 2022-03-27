@@ -188,9 +188,30 @@ dados_fidc <- function(cnpj, start, end, table){
                                           -value,
                                         TRUE ~ value))
 
+    } else if (table != 'I') {
+      full_fidc <- full_fidc %>%
+        dplyr::left_join(dadosCVM::defs_fidcs,
+                         by = 'category') %>%
+        dplyr::filter(.data$item != 'total') %>%
+        dplyr::rename(cnpj       = .data$CNPJ_FUNDO,
+                      nome       = .data$DENOM_SOCIAL,
+                      data       = .data$DT_COMPTC) %>%
+        dplyr::select(.data$data,
+                      .data$cnpj,
+                      .data$nome,
+                      .data$category,
+                      .data$base,
+                      .data$segment,
+                      .data$item,
+                      .data$value) %>%
+        dplyr::mutate(data    = as.Date(.data$data, '%Y-%m-%d'),
+                      cnpj     = as.character(.data$cnpj),
+                      nome     = as.character(.data$nome),
+                      category = as.factor(.data$category),
+                      base     = as.factor(.data$base),
+                      segment  = as.factor(.data$segment),
+                      item     = as.factor(.data$item))
     }
-
-
 
     return(full_fidc)
     rm(full_fidc)
