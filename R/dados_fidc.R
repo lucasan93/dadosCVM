@@ -203,17 +203,3 @@ dados_fidc <- function(cnpj, start, end, table){
     stop('Start date must be before end date.')
   }
 }
-
-library(dplyr)
-library(lubridate)
-library(tidyr)
-teste <- dados_fidc(cnpj  = c('09.217.024/0001-71',
-                              '14.428.086/0001-37',
-                              '19.221.032/0001-45',
-                              '24.194.675/0001-87'),
-                    start = as.Date('2010-10-01'),
-                    end   = as.Date('2022-02-01'),
-                    table = 'I')
-
-
-View(teste)
