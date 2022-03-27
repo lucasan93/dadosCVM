@@ -85,12 +85,15 @@ dados_fidc <- function(cnpj, start, end, table){
                                   sep   = ';',
                                   quote = '') %>%
                     dplyr::filter(.data$CNPJ_FUNDO %in% cnpj) %>%
+                    dplyr::mutate(DT_COMPTC = as.Date(.data$DT_COMPTC, '%Y-%m-%d')) %>%
+                    dplyr::filter(.data$DT_COMPTC >= start,
+                                  .data$DT_COMPTC <= end) %>%
                     tidyr::pivot_longer(cols = tidyr::starts_with('TAB_'),
                                         names_to = 'category',
                                         values_to = 'value')
 
-          full_fidc <- rbind(fidc,
-                             full_fidc)
+          full_fidc <- dplyr::bind_rows(fidc,
+                                        full_fidc)
         }
     }
 
@@ -141,32 +144,56 @@ dados_fidc <- function(cnpj, start, end, table){
                                     values_to = 'value')
 
 
-          full_fidc <- rbind(fidc,
-                             full_fidc)
+          full_fidc <- dplyr::bind_rows(fidc,
+                                        full_fidc)
         }
       }
 
-    full_fidc <- full_fidc %>%
-                    dplyr::left_join(dadosCVM::defs_fidcs,
-                              by = 'category') %>%
-                    dplyr::filter(.data$item != 'total') %>%
-                    dplyr::rename(cnpj = .data$CNPJ_FUNDO,
-                                  nome = .data$DENOM_SOCIAL,
-                                  data = .data$DT_COMPTC) %>%
-                    dplyr::select(.data$data,
-                                  .data$cnpj,
-                                  .data$nome,
-                                  .data$category,
-                                  .data$segment,
-                                  .data$item,
-                                  .data$value) %>%
-                    dplyr::mutate(data    = as.Date(.data$data, '%Y-%m-%d'),
-                                  cnpj     = as.character(.data$cnpj),
-                                  nome     = as.character(.data$nome),
-                                  category = as.factor(.data$category),
-                                  segment  = as.factor(.data$segment),
-                                  item     = as.factor(.data$item),
-                                  value    = as.numeric(.data$value))
+    if (table == 'I') {
+      full_fidc <- full_fidc %>%
+        dplyr::left_join(dadosCVM::defs_fidcs,
+                         by = 'category') %>%
+        dplyr::filter(.data$item != 'total') %>%
+        dplyr::rename(cnpj       = .data$CNPJ_FUNDO,
+                      nome       = .data$DENOM_SOCIAL,
+                      data       = .data$DT_COMPTC,
+                      adm        = .data$ADMIN,
+                      adm_cnpj   = .data$CNPJ_ADMIN,
+                      condominio = .data$CONDOM,
+                      cot_int    = .data$COTST_INTERESSE,
+                      exclusivo  = .data$FUNDO_EXCLUSIVO,
+                      prazo_conv = .data$PRAZO_CONVERSAO_COTA,
+                      prazo_resg = .data$PRAZO_PAGTO_RESGATE,
+                      tp_conv    = .data$TP_PRAZO_CONVERSAO_COTA,
+                      tp_resg    = .data$TP_PRAZO_PAGTO_RESGATE) %>%
+        dplyr::select(.data$data,
+                      .data$cnpj,
+                      .data$nome,
+                      .data$adm,
+                      .data$adm_cnpj,
+                      .data$condominio,
+                      .data$cot_int,
+                      .data$exclusivo,
+                      .data$prazo_conv,
+                      .data$prazo_resg,
+                      .data$tp_conv,
+                      .data$tp_resg,
+                      .data$category,
+                      .data$segment,
+                      .data$class,
+                      .data$item,
+                      .data$value) %>%
+        dplyr::mutate(data    = as.Date(.data$data, '%Y-%m-%d'),
+                      cnpj     = as.character(.data$cnpj),
+                      nome     = as.character(.data$nome),
+                      category = as.factor(.data$category),
+                      segment  = as.factor(.data$segment),
+                      class    = as.factor(.data$class),
+                      item     = as.factor(.data$item))
+
+    }
+
+
 
     return(full_fidc)
     rm(full_fidc)
@@ -177,3 +204,16 @@ dados_fidc <- function(cnpj, start, end, table){
   }
 }
 
+library(dplyr)
+library(lubridate)
+library(tidyr)
+teste <- dados_fidc(cnpj  = c('09.217.024/0001-71',
+                              '14.428.086/0001-37',
+                              '19.221.032/0001-45',
+                              '24.194.675/0001-87'),
+                    start = as.Date('2010-10-01'),
+                    end   = as.Date('2022-02-01'),
+                    table = 'I')
+
+
+View(teste)
