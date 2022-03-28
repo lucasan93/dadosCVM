@@ -190,16 +190,16 @@ dados_fidc <- function(cnpj, start, end, table){
                                           -value,
                                         TRUE ~ value))
 
-    } else if (table != 'X_I') {
+    } else if (table == 'X_I') {
 
-      ull_fidc <- full_fidc %>%
+      full_fidc <- full_fidc %>%
         dplyr::left_join(dadosCVM::defs_fidcs,
                          by = 'category') %>%
         dplyr::filter(.data$item != 'total') %>%
         dplyr::rename(cnpj       = .data$CNPJ_FUNDO,
                       nome       = .data$DENOM_SOCIAL,
                       data       = .data$DT_COMPTC,
-                      classe     = .data$TAB_X_CLASSE_SERIE) %>%
+                      serie      = .data$TAB_X_CLASSE_SERIE) %>%
         dplyr::select(.data$data,
                       .data$cnpj,
                       .data$nome,
@@ -207,7 +207,7 @@ dados_fidc <- function(cnpj, start, end, table){
                       .data$base,
                       .data$segment,
                       .data$class,
-                      .data$classe,
+                      .data$serie,
                       .data$item,
                       .data$value) %>%
         dplyr::mutate(data    = as.Date(.data$data, '%Y-%m-%d'),
@@ -217,7 +217,7 @@ dados_fidc <- function(cnpj, start, end, table){
                       base     = as.factor(.data$base),
                       segment  = as.factor(.data$segment),
                       class    = as.factor(.data$class),
-                      classe   = as.factor(.data$classe),
+                      serie    = as.factor(.data$serie),
                       item     = as.factor(.data$item))
 
 
