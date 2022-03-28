@@ -190,7 +190,7 @@ dados_fidc <- function(cnpj, start, end, table){
                                           -value,
                                         TRUE ~ value))
 
-    } else if (table == 'X_I') {
+    } else if (table == 'X_1') {
 
       full_fidc <- full_fidc %>%
         dplyr::left_join(dadosCVM::defs_fidcs,
