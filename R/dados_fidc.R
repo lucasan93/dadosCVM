@@ -30,7 +30,7 @@ dados_fidc <- function(cnpj, start, end, table){
 
   if (table == 'X_1_1') {
     start <- max(as.Date('2019-11-30'), start)
-    end   <- max(as.Date('2019-11-30'), start)
+    end   <- max(as.Date('2019-11-30'), end)
   }
 
 
