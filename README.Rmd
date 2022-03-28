@@ -1,5 +1,13 @@
 ---
 output: github_document
+
+
+
+
+
+
+
+always_allow_html: true
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -16,16 +24,17 @@ knitr::opts_chunk$set(
 # dadosCVM
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
-The goal of dadosCVM is to obtain and adjust data of investments funds registered on Comissão de Valores Mobiliários (Security and Exchange Commissions from Brazil). Data is collected from files available at http://dados.cvm.gov.br/dados/. 
+The goal of dadosCVM is to obtain and adjust data of investments funds registered on Comissão de Valores Mobiliários (Security and Exchange Commissions from Brazil). Data is collected from files available at <http://dados.cvm.gov.br/dados/>.
 
 Main goals/ideas are descripted below:
 
-  - cad_fi(): Download the latest Registration Data ('Dados Cadastrais') available on CVM at http://dados.cvm.gov.br/dados/FI/CAD/DADOS/ - 90%;
-  - dados_diarios(): Download the daily fund information (CNPJ, fund raisings and withdraws, investors' amount, equity value, share value) of selected funds between two dates. Data is available at http://dados.cvm.gov.br/dados/FI/DOC/INF_DIARIO/DADOS/ - under development;
-  - dados_fidc(): Develop a function that downloads monthly FIDC data between two dates from a specified table of the FIDC files located at http://dados.cvm.gov.br/dados/FIDC/DOC/INF_MENSAL/DADOS/ - under development;
-  - simpl_names(): Develop a function that simplifies funds names (i.e. transforms 'FUNDO DE INVESTIMENTO EM DIREITOS CREDITORIOS' to 'FIDC') - 0%.
+-   cad_fi(): Download the latest Registration Data ('Dados Cadastrais') available on CVM at <http://dados.cvm.gov.br/dados/FI/CAD/DADOS/> - 90%;
+-   dados_diarios(): Download the daily fund information (CNPJ, fund raisings and withdraws, investors' amount, equity value, share value) of selected funds between two dates. Data is available at <http://dados.cvm.gov.br/dados/FI/DOC/INF_DIARIO/DADOS/> - under development;
+-   dados_fidc(): Develop a function that downloads monthly FIDC data between two dates from a specified table of the FIDC files located at <http://dados.cvm.gov.br/dados/FIDC/DOC/INF_MENSAL/DADOS/> - under development;
+-   simpl_names(): Develop a function that simplifies funds names (i.e. transforms 'FUNDO DE INVESTIMENTO EM DIREITOS CREDITORIOS' to 'FIDC') - 0%.
 
 ## Installation
 
@@ -40,7 +49,7 @@ devtools::install_github("lucasan93/dadosCVM")
 
 ### 1: Downloading the latest registration data from CVM:
 
-The function _cad_fi()_ downloads the latest registration data available on CVM.
+The function *cad_fi()* downloads the latest registration data available on CVM.
 
 ```{r example, warning=FALSE, message=FALSE}
 library(dadosCVM)
@@ -48,7 +57,7 @@ library(dplyr)
 library(kableExtra)
 ```
 
-Below the top-10 funds in operation are extracted, sorted by their equity and identified by their CNPJ (Brazil National Registry of Legal Entities number). Note that the _data.frame_ contains 40 columns and more than 60 thousand observations. 
+Below the top-10 funds in operation are extracted, sorted by their equity and identified by their CNPJ (Brazil National Registry of Legal Entities number). Note that the *data.frame* contains 40 columns and more than 60 thousand observations.
 
 ```{r cadfi, warning=FALSE, message=FALSE}
 dados_cadastrais <- cad_fi() %>%
@@ -66,9 +75,9 @@ dados_cadastrais <- cad_fi() %>%
 kable(dados_cadastrais)
 ```
 
-### 2: Obtaining daily data 
+### 2: Obtaining daily data
 
-The function _dados_diarios()_ downloads daily data (CNPJ, portfolio value, share value, equity, withdraws, fund raisings, and number of investors) for specifics fund (identified by theis CNPJs) between two given dates. Note that daily data is only available for funds of type 'FI' and that initial date must be greater than 2005-01-01.
+The function *dados_diarios()* downloads daily data (CNPJ, portfolio value, share value, equity, withdraws, fund raisings, and number of investors) for specifics fund (identified by theis CNPJs) between two given dates. Note that daily data is only available for funds of type 'FI' and that initial date must be greater than 2005-01-01.
 
 ```{r example2, warning=FALSE, message=FALSE}
 library(dadosCVM)
@@ -95,7 +104,7 @@ dados_diarios(cnpj  = dados_cadastrais$cnpj,
 
 ### 3: Obtaining FIDC's monthly portfolio
 
-The function _dados_fidc()_ downloads monthly data for a group of funds (identified by theis CNPJs) between two given dates and for a specified database (identified in CVM's FIDC's META file) out of 16 different databases. Initial date must be greater than 2013-01-01.
+The function *dados_fidc()* downloads monthly data for a group of funds (identified by theis CNPJs) between two given dates and for a specified database (identified in CVM's FIDC's META file) out of 16 different databases. Initial date must be greater than 2013-01-01.
 
 **This function is currently under development. I'm working on simplifying column names and adding the opting to pivot the data.frame format from wide to long.**
 
@@ -105,9 +114,10 @@ library(dplyr)
 library(tidyverse)
 library(ggplot2)
 library(scales)
+library(kableExtra)
 ```
 
-First, let's select the top-10 FIDCs in operation with the highest equity value and extract their CNPJs and the operations' start date using the _cad_fi_ function:
+First, let's select the top-10 FIDCs in operation with the highest equity value and extract their CNPJs and the operations' start date using the *cad_fi* function:
 
 ```{r}
 infos <- cad_fi() %>% 
@@ -159,10 +169,61 @@ dados_fidc(cnpj  = infos$cnpj,
         theme_minimal()
 ```
 
-And in order to verify how the segments and its items are organized based on their CVM categories, take a look at the _defs_fidc_ database within the package. **Note that the observations in which item == 'total' are excluded when running the _dados_fidc()_ function in order to avoid double counting.**
+And in order to verify how the segments and its items are organized based on their CVM categories, take a look at the *defs_fidc* database within the package. **Note that the observations in which item == 'total' are excluded when running the *dados_fidc()* function in order to avoid double counting.**
 
-```{r}
-head(defs_fidcs)
+```{r warning=FALSE, message=FALSE}
+defs_fidcs %>% 
+    filter(str_detect(category, '^TAB_II_')) %>% 
+    kable(align = c('l', 'l')) %>% 
+    kable_styling(latex_options = 'striped')
 ```
 
+### 4: Obtaining FIDC's assets
 
+Now let's start developing a fund's balance sheet. We can see through the *tabs_fidc* database available in the **dadosCVM** package that the assets' data are located in the first table:
+
+```{r warning=FALSE, message=FALSE}
+tabs_fidcs %>% 
+kable(align = c('l', 'l')) %>% 
+    kable_styling(latex_options = 'striped')
+```
+
+Let's then gather the largest FIDC's assets data and plot its main segments:
+
+```{r warning=FALSE, message=FALSE}
+dados_fidc(cnpj  = infos$cnpj[1],
+           start = infos$inicio_atv[1],
+           end   = as.Date('2022-03-31'),
+           table = 'I') %>%
+      filter(base == 'ativo', value != 0) %>% 
+      group_by(data, segment) %>% 
+              summarise(valor = sum(value)) %>% 
+      ggplot() +
+      aes(x = data, y = valor, fill = segment) +
+      geom_bar(position = 'stack', stat     = 'identity') +
+      scale_y_continuous(labels = unit_format(unit = "Bi", scale = 1e-9)) +
+      xlab('Date') +
+      ylab('Value (BRL)') +
+      theme_minimal()
+
+```
+
+We can also analyze the items within each asset segment:
+
+```{r warning=FALSE, message=FALSE}
+dados_fidc(cnpj  = infos$cnpj[1],
+           start = infos$inicio_atv[1],
+           end   = as.Date('2022-03-31'),
+           table = 'I') %>%
+      filter(base == 'ativo', value != 0) %>% 
+      group_by(data, segment, item) %>% 
+              summarise(valor = sum(value)) %>% 
+      ggplot() +
+      aes(x = data, y = valor, fill = item) +
+      geom_bar(position = 'stack', stat     = 'identity') +
+      scale_y_continuous(labels = unit_format(unit = "MM", scale = 1e-6)) +
+      xlab('Date') +
+      ylab('Value (BRL)') +
+      theme_minimal() +
+      facet_wrap(~segment, scales = 'free_y')
+```

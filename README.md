@@ -111,10 +111,10 @@ FI
 1997-01-02
 </td>
 <td style="text-align:left;">
-2022-03-22
+2022-03-23
 </td>
 <td style="text-align:left;">
-159,950,625,723
+159,651,227,089
 </td>
 </tr>
 <tr>
@@ -131,10 +131,10 @@ FI
 2017-05-03
 </td>
 <td style="text-align:left;">
-2022-03-22
+2022-03-23
 </td>
 <td style="text-align:left;">
-137,512,077,269
+137,429,549,362
 </td>
 </tr>
 <tr>
@@ -151,10 +151,10 @@ FI
 2005-09-21
 </td>
 <td style="text-align:left;">
-2022-03-22
+2022-03-23
 </td>
 <td style="text-align:left;">
-122,546,008,528
+122,607,768,840
 </td>
 </tr>
 <tr>
@@ -191,10 +191,10 @@ FI
 1996-12-30
 </td>
 <td style="text-align:left;">
-2022-03-22
+2022-03-23
 </td>
 <td style="text-align:left;">
-95,456,455,653
+95,925,774,092
 </td>
 </tr>
 <tr>
@@ -211,10 +211,10 @@ FI
 1995-10-02
 </td>
 <td style="text-align:left;">
-2022-03-22
+2022-03-23
 </td>
 <td style="text-align:left;">
-94,696,631,319
+94,753,353,219
 </td>
 </tr>
 <tr>
@@ -231,10 +231,10 @@ FI
 2021-09-30
 </td>
 <td style="text-align:left;">
-2022-03-22
+2022-03-23
 </td>
 <td style="text-align:left;">
-71,498,306,598
+72,417,562,362
 </td>
 </tr>
 <tr>
@@ -251,10 +251,10 @@ FI
 2021-09-30
 </td>
 <td style="text-align:left;">
-2022-03-22
+2022-03-23
 </td>
 <td style="text-align:left;">
-71,493,468,680
+72,412,668,571
 </td>
 </tr>
 <tr>
@@ -271,10 +271,10 @@ FI
 2002-07-15
 </td>
 <td style="text-align:left;">
-2022-03-22
+2022-03-23
 </td>
 <td style="text-align:left;">
-60,351,083,083
+59,114,466,417
 </td>
 </tr>
 <tr>
@@ -291,10 +291,10 @@ FI
 2005-08-24
 </td>
 <td style="text-align:left;">
-2022-03-22
+2022-03-23
 </td>
 <td style="text-align:left;">
-55,217,215,452
+55,208,583,595
 </td>
 </tr>
 </tbody>
@@ -353,6 +353,7 @@ library(dplyr)
 library(tidyverse)
 library(ggplot2)
 library(scales)
+library(kableExtra)
 ```
 
 First, let’s select the top-10 FIDCs in operation with the highest
@@ -434,12 +435,1002 @@ within the package. **Note that the observations in which item ==
 to avoid double counting.**
 
 ``` r
-head(defs_fidcs)
-#>              category     segment        item
-#> 1  TAB_II_VL_CARTEIRA    carteira       total
-#> 2  TAB_II_A_VL_INDUST  industrial  industrial
-#> 3  TAB_II_B_VL_IMOBIL imobiliario imobiliario
-#> 4  TAB_II_C_VL_COMERC   comercial       total
-#> 5 TAB_II_C1_VL_COMERC   comercial   comercial
-#> 6 TAB_II_C2_VL_VAREJO   comercial      varejo
+defs_fidcs %>% 
+    filter(str_detect(category, '^TAB_II_')) %>% 
+    kable(align = c('l', 'l')) %>% 
+    kable_styling(latex_options = 'striped')
 ```
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+category
+</th>
+<th style="text-align:left;">
+table
+</th>
+<th style="text-align:left;">
+id
+</th>
+<th style="text-align:left;">
+base
+</th>
+<th style="text-align:left;">
+segment
+</th>
+<th style="text-align:left;">
+class
+</th>
+<th style="text-align:left;">
+item
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_VL\_CARTEIRA
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+total
+</td>
+<td style="text-align:left;">
+total
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_A\_VL\_INDUST
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.A
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+industrial
+</td>
+<td style="text-align:left;">
+industrial
+</td>
+<td style="text-align:left;">
+industrial
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_B\_VL\_IMOBIL
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.B
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+imobiliario
+</td>
+<td style="text-align:left;">
+imobiliario
+</td>
+<td style="text-align:left;">
+imobiliario
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_C\_VL\_COMERC
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.C
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+comercial
+</td>
+<td style="text-align:left;">
+total
+</td>
+<td style="text-align:left;">
+total
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_C1\_VL\_COMERC
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.C.1
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+comercial
+</td>
+<td style="text-align:left;">
+comercial
+</td>
+<td style="text-align:left;">
+comercial
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_C2\_VL\_VAREJO
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.C.2
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+comercial
+</td>
+<td style="text-align:left;">
+varejo
+</td>
+<td style="text-align:left;">
+varejo
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_C3\_VL\_ARREND
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.C.3
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+comercial
+</td>
+<td style="text-align:left;">
+arrendamento mercantil
+</td>
+<td style="text-align:left;">
+arrendamento mercantil
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_D\_VL\_SERV
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.D
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+servicos
+</td>
+<td style="text-align:left;">
+total
+</td>
+<td style="text-align:left;">
+total
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_D1\_VL\_SERV
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.D.1
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+servicos
+</td>
+<td style="text-align:left;">
+servicos
+</td>
+<td style="text-align:left;">
+servicos
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_D2\_VL\_SERV\_PUBLICO
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.D.2
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+servicos
+</td>
+<td style="text-align:left;">
+servicos publicos
+</td>
+<td style="text-align:left;">
+servicos publicos
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_D3\_VL\_SERV\_EDUC
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.D.3
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+servicos
+</td>
+<td style="text-align:left;">
+servicos educacionais
+</td>
+<td style="text-align:left;">
+servicos educacionais
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_D4\_VL\_ENTRET
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.D.4
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+servicos
+</td>
+<td style="text-align:left;">
+servicos entretenimento
+</td>
+<td style="text-align:left;">
+servicos entretenimento
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_E\_VL\_AGRONEG
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.E
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+agronegocio
+</td>
+<td style="text-align:left;">
+agronegocio
+</td>
+<td style="text-align:left;">
+agronegocio
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_F\_VL\_FINANC
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.F
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+financeiro
+</td>
+<td style="text-align:left;">
+total
+</td>
+<td style="text-align:left;">
+total
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_F1\_VL\_CRED\_PESSOA
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.F.1
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+financeiro
+</td>
+<td style="text-align:left;">
+credito pessoal
+</td>
+<td style="text-align:left;">
+credito pessoal
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_F2\_VL\_CRED\_PESSOA\_CONSIG
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.F.2
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+financeiro
+</td>
+<td style="text-align:left;">
+credito pessoal consignado
+</td>
+<td style="text-align:left;">
+credito pessoal consignado
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_F3\_VL\_CRED\_CORP
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.F.3
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+financeiro
+</td>
+<td style="text-align:left;">
+credito corporativo
+</td>
+<td style="text-align:left;">
+credito corporativo
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_F4\_VL\_MIDMARKET
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.F.4
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+financeiro
+</td>
+<td style="text-align:left;">
+middle market
+</td>
+<td style="text-align:left;">
+middle market
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_F5\_VL\_VEICULO
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.F.5
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+financeiro
+</td>
+<td style="text-align:left;">
+veiculos
+</td>
+<td style="text-align:left;">
+veiculos
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_F6\_VL\_IMOBIL\_EMPRESA
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.F.6
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+financeiro
+</td>
+<td style="text-align:left;">
+carteira imobiliaria empresarial
+</td>
+<td style="text-align:left;">
+carteira imobiliaria empresarial
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_F7\_VL\_IMOBIL\_RESID
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.F.7
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+financeiro
+</td>
+<td style="text-align:left;">
+carteira imobiliaria residencial
+</td>
+<td style="text-align:left;">
+carteira imobiliaria residencial
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_F8\_VL\_OUTRO
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.F.8
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+financeiro
+</td>
+<td style="text-align:left;">
+outros
+</td>
+<td style="text-align:left;">
+outros
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_G\_VL\_CREDITO
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.G
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+cartao de credito
+</td>
+<td style="text-align:left;">
+cartao de credito
+</td>
+<td style="text-align:left;">
+cartao de credito
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_H\_VL\_FACTOR
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.H
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+factoring
+</td>
+<td style="text-align:left;">
+total
+</td>
+<td style="text-align:left;">
+total
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_H1\_VL\_PESSOA
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.H.1
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+factoring
+</td>
+<td style="text-align:left;">
+pessoal
+</td>
+<td style="text-align:left;">
+pessoal
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_H2\_VL\_CORP
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.H.2
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+factoring
+</td>
+<td style="text-align:left;">
+corporativo
+</td>
+<td style="text-align:left;">
+corporativo
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_I\_VL\_SETOR\_PUBLICO
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.I
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+setor publico
+</td>
+<td style="text-align:left;">
+total
+</td>
+<td style="text-align:left;">
+total
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_I1\_VL\_PRECAT
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.I.1
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+setor publico
+</td>
+<td style="text-align:left;">
+precatorios
+</td>
+<td style="text-align:left;">
+precatorios
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_I2\_VL\_TRIBUT
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.I.2
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+setor publico
+</td>
+<td style="text-align:left;">
+creditos tributarios
+</td>
+<td style="text-align:left;">
+creditos tributarios
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_I3\_VL\_ROYALTIES
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.I.3
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+setor publico
+</td>
+<td style="text-align:left;">
+royalties
+</td>
+<td style="text-align:left;">
+royalties
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_I4\_VL\_OUTRO
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.I.4
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+setor publico
+</td>
+<td style="text-align:left;">
+outros
+</td>
+<td style="text-align:left;">
+outros
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_J\_VL\_JUDICIAL
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.J
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+acoes judiciais
+</td>
+<td style="text-align:left;">
+acoes judiciais
+</td>
+<td style="text-align:left;">
+acoes judiciais
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TAB\_II\_K\_VL\_MARCA
+</td>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+II.K
+</td>
+<td style="text-align:left;">
+carteira
+</td>
+<td style="text-align:left;">
+prop intelectual
+</td>
+<td style="text-align:left;">
+prop intelectual
+</td>
+<td style="text-align:left;">
+prop intelectual
+</td>
+</tr>
+</tbody>
+</table>
+
+### 4: Obtaining FIDC’s assets
+
+Now let’s start developing a fund’s balance sheet. We can see through
+the *tabs\_fidc* database available in the **dadosCVM** package that the
+assets’ data are located in the first table:
+
+``` r
+tabs_fidcs %>% 
+kable(align = c('l', 'l')) %>% 
+    kable_styling(latex_options = 'striped')
+```
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+tabela
+</th>
+<th style="text-align:left;">
+conteudo
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+I\_TODOS
+</td>
+<td style="text-align:left;">
+informacoes cadastrais dos fundos e ativos
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+II
+</td>
+<td style="text-align:left;">
+classificacoes da carteira
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+III
+</td>
+<td style="text-align:left;">
+passivos
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IV
+</td>
+<td style="text-align:left;">
+patrimonio liquido
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+V
+</td>
+<td style="text-align:left;">
+direitos creditorios classificados por prazo de vencimento inadimplencia
+e pagamentos antecipados
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VI
+</td>
+<td style="text-align:left;">
+direitos creditorios classificados por prazo de vencimento inadimplencia
+e pagamentos antecipados
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VII
+</td>
+<td style="text-align:left;">
+aquisicoes substituicoes e recompras
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IX
+</td>
+<td style="text-align:left;">
+taxas de desconto e de juros das compras e vendas
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+X\_1
+</td>
+<td style="text-align:left;">
+informacoes sobre cotistas por classe e serie
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+X\_1\_1
+</td>
+<td style="text-align:left;">
+classificacoes dos cotistas
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+X\_2
+</td>
+<td style="text-align:left;">
+informacoes sobre as cotas
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+X\_3
+</td>
+<td style="text-align:left;">
+rentabilidade
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+X\_4
+</td>
+<td style="text-align:left;">
+transacoes de cotas do fundo
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+X\_5
+</td>
+<td style="text-align:left;">
+ativos classificados pela liquidez
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+X\_6
+</td>
+<td style="text-align:left;">
+taxas de desempenho real e esperada
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+X\_7
+</td>
+<td style="text-align:left;">
+garantias
+</td>
+</tr>
+</tbody>
+</table>
+
+Let’s then gather the largest FIDC’s assets data and plot its main
+segments:
+
+``` r
+dados_fidc(cnpj  = infos$cnpj[1],
+           start = infos$inicio_atv[1],
+           end   = as.Date('2022-03-31'),
+           table = 'I') %>%
+      filter(base == 'ativo', value != 0) %>% 
+      group_by(data, segment) %>% 
+              summarise(valor = sum(value)) %>% 
+      ggplot() +
+      aes(x = data, y = valor, fill = segment) +
+      geom_bar(position = 'stack', stat     = 'identity') +
+      scale_y_continuous(labels = unit_format(unit = "Bi", scale = 1e-9)) +
+      xlab('Date') +
+      ylab('Value (BRL)') +
+      theme_minimal()
+#> [1] "Obtaining data between 2019-01-01 and 2022-02-28"
+#> [1] "Obtaining data between 2016-04-20 and 2018-12-31"
+```
+
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+
+We can also analyze the items within each asset segment:
+
+``` r
+dados_fidc(cnpj  = infos$cnpj[1],
+           start = infos$inicio_atv[1],
+           end   = as.Date('2022-03-31'),
+           table = 'I') %>%
+      filter(base == 'ativo', value != 0) %>% 
+      group_by(data, segment, item) %>% 
+              summarise(valor = sum(value)) %>% 
+      ggplot() +
+      aes(x = data, y = valor, fill = item) +
+      geom_bar(position = 'stack', stat     = 'identity') +
+      scale_y_continuous(labels = unit_format(unit = "MM", scale = 1e-6)) +
+      xlab('Date') +
+      ylab('Value (BRL)') +
+      theme_minimal() +
+      facet_wrap(~segment, scales = 'free_y')
+#> [1] "Obtaining data between 2019-01-01 and 2022-02-28"
+#> [1] "Obtaining data between 2016-04-20 and 2018-12-31"
+```
+
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
