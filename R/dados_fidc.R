@@ -28,6 +28,11 @@ dados_fidc <- function(cnpj, start, end, table){
     warning(paste0('Data for end date unavailable. Setting end date to ', Sys.Date() - lubridate::days(lubridate::day(Sys.Date())),'.' ))
   }
 
+  if (table == 'X_1_1') {
+    start <- max(as.Date('2019-11-30'), start)
+    end   <- max(as.Date('2019-11-30'), start)
+  }
+
 
   if (end >= start) {
     # URL in which data from after the threshold date is available
