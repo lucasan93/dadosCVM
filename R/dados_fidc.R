@@ -202,6 +202,7 @@ dados_fidc <- function(cnpj, start, end, table){
                       .data$category,
                       .data$base,
                       .data$segment,
+                      .data$class,
                       .data$item,
                       .data$value) %>%
         dplyr::mutate(data    = as.Date(.data$data, '%Y-%m-%d'),
@@ -210,6 +211,7 @@ dados_fidc <- function(cnpj, start, end, table){
                       category = as.factor(.data$category),
                       base     = as.factor(.data$base),
                       segment  = as.factor(.data$segment),
+                      class    = as.factor(.data$class),
                       item     = as.factor(.data$item))
     }
 
