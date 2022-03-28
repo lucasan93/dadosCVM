@@ -88,7 +88,8 @@ dados_fidc <- function(cnpj, start, end, table){
                     dplyr::mutate(DT_COMPTC = as.Date(.data$DT_COMPTC, '%Y-%m-%d')) %>%
                     dplyr::filter(.data$DT_COMPTC >= start,
                                   .data$DT_COMPTC <= end) %>%
-                    tidyr::pivot_longer(cols = tidyr::starts_with('TAB_'),
+                    tidyr::pivot_longer(cols = c(tidyr::starts_with('TAB_'),
+                                                 -tidyr::matches('TAB_X_CLASSE_SERIE')),
                                         names_to = 'category',
                                         values_to = 'value')
 
@@ -139,7 +140,8 @@ dados_fidc <- function(cnpj, start, end, table){
             dplyr::mutate(DT_COMPTC = as.Date(.data$DT_COMPTC, '%Y-%m-%d')) %>%
             dplyr::filter(.data$DT_COMPTC >= start,
                           .data$DT_COMPTC <= end) %>%
-            tidyr::pivot_longer(cols = tidyr::starts_with('TAB_'),
+            tidyr::pivot_longer(cols =  c(tidyr::starts_with('TAB_'),
+                                          -tidyr::matches('TAB_X_CLASSE_SERIE')),
                                     names_to = 'category',
                                     values_to = 'value')
 
@@ -223,4 +225,3 @@ dados_fidc <- function(cnpj, start, end, table){
     stop('Start date must be before end date.')
   }
 }
-
