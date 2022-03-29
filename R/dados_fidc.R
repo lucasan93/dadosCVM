@@ -195,7 +195,7 @@ dados_fidc <- function(cnpj, start, end, table){
                                           -value,
                                         TRUE ~ value))
 
-    } else if (table == 'X_1' | table == 'X_2') {
+    } else if (table == 'X_1' | table == 'X_2' | table == 'X_3') {
 
       full_fidc <- full_fidc %>%
         dplyr::left_join(dadosCVM::defs_fidcs,
@@ -226,7 +226,7 @@ dados_fidc <- function(cnpj, start, end, table){
                       item     = as.factor(.data$item))
 
 
-    } else if (table != 'I' && table != 'X_I' && table != 'X_2') {
+    } else if (table != 'I' && table != 'X_I' && table != 'X_2' && table != 'X_3') {
       full_fidc <- full_fidc %>%
         dplyr::left_join(dadosCVM::defs_fidcs,
                          by = 'category') %>%
