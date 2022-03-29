@@ -19,7 +19,8 @@ cad_fi <- function() {
                        '/CAD',
                        '/DADOS',
                        '/cad_fi.csv'),
-                       temp)
+                       temp,
+                       quiet = TRUE)
 
   # Read File
   utils::read.csv(temp,
