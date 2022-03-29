@@ -94,7 +94,8 @@ dados_fidc <- function(cnpj, start, end, table){
                     dplyr::filter(.data$DT_COMPTC >= start,
                                   .data$DT_COMPTC <= end) %>%
                     tidyr::pivot_longer(cols = c(tidyr::starts_with('TAB_'),
-                                                 -tidyr::matches('TAB_X_CLASSE_SERIE')),
+                                                 -tidyr::matches(c('TAB_X_CLASSE_SERIE',
+                                                                   'TAB_X_TP_OPER'))),
                                         names_to = 'category',
                                         values_to = 'value')
 
@@ -146,7 +147,8 @@ dados_fidc <- function(cnpj, start, end, table){
             dplyr::filter(.data$DT_COMPTC >= start,
                           .data$DT_COMPTC <= end) %>%
             tidyr::pivot_longer(cols =  c(tidyr::starts_with('TAB_'),
-                                          -tidyr::matches('TAB_X_CLASSE_SERIE')),
+                                          -tidyr::matches(c('TAB_X_CLASSE_SERIE',
+                                                            'TAB_X_TP_OPER'))),
                                     names_to = 'category',
                                     values_to = 'value')
 
@@ -226,7 +228,40 @@ dados_fidc <- function(cnpj, start, end, table){
                       item     = as.factor(.data$item))
 
 
-    } else if (table != 'I' && table != 'X_I' && table != 'X_2' && table != 'X_3') {
+    } else if (table == 'X_4') {
+      full_fidc <- full_fidc %>%
+        dplyr::left_join(dadosCVM::defs_fidcs,
+                         by = 'category') %>%
+        dplyr::filter(.data$item != 'total') %>%
+        dplyr::rename(cnpj       = .data$CNPJ_FUNDO,
+                      nome       = .data$DENOM_SOCIAL,
+                      data       = .data$DT_COMPTC,
+                      operacao   = .data$TAB_X_TP_OPER) %>%
+        dplyr::select(.data$data,
+                      .data$cnpj,
+                      .data$nome,
+                      .data$category,
+                      .data$base,
+                      .data$segment,
+                      .data$class,
+                      .data$serie,
+                      .data$item,
+                      .data$operacao,
+                      .data$value) %>%
+        dplyr::mutate(data    = as.Date(.data$data, '%Y-%m-%d'),
+                      cnpj     = as.character(.data$cnpj),
+                      nome     = as.character(.data$nome),
+                      category = as.factor(.data$category),
+                      base     = as.factor(.data$base),
+                      segment  = as.factor(.data$segment),
+                      class    = as.factor(.data$class),
+                      serie    = as.factor(.data$serie),
+                      item     = as.factor(.data$item),
+                      operacao = as.factor(.data$operacao))
+
+
+    } else if (table != 'I' && table != 'X_I' && table != 'X_2' && table != 'X_3'
+               && table != 'X_4') {
       full_fidc <- full_fidc %>%
         dplyr::left_join(dadosCVM::defs_fidcs,
                          by = 'category') %>%
