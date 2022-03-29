@@ -244,7 +244,6 @@ dados_fidc <- function(cnpj, start, end, table){
                       .data$base,
                       .data$segment,
                       .data$class,
-                      .data$serie,
                       .data$item,
                       .data$operacao,
                       .data$value) %>%
@@ -255,7 +254,6 @@ dados_fidc <- function(cnpj, start, end, table){
                       base     = as.factor(.data$base),
                       segment  = as.factor(.data$segment),
                       class    = as.factor(.data$class),
-                      serie    = as.factor(.data$serie),
                       item     = as.factor(.data$item),
                       operacao = as.factor(.data$operacao))
 
