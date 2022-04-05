@@ -3,5 +3,3 @@ defs_fidcs <- readr::read_delim("C:/Users/lmarin/Desktop/Research/Arquivos R/con
                          trim_ws = TRUE)
 
 usethis::use_data(defs_fidcs, overwrite = TRUE)
-
-

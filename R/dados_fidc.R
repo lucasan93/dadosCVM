@@ -16,6 +16,11 @@
 #'
 dados_fidc <- function(cnpj, start, end, table){
 
+  if (!table %in% c('I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'IX',
+                    'X_1', 'X_1_1', 'X_2', 'X_3', 'X_4', 'X_5', 'X_6', 'X_7')) {
+    stop('Table not available. See tabs_fidcs for reference.')
+  }
+
   if (start < as.Date('2013-01-01')) {
     warning('Data unavailable for selected start date. Setting start date to 2013-01-01.')
   }
@@ -32,6 +37,7 @@ dados_fidc <- function(cnpj, start, end, table){
     start <- max(as.Date('2019-11-30'), start)
     end   <- max(as.Date('2019-11-30'), end)
   }
+
 
 
   if (end >= start) {
