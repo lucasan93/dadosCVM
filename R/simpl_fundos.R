@@ -25,3 +25,13 @@ simpl_funds <- function(names){
 
 }
 
+
+k <- simpl_funds(x)
+
+
+print(length(k))
+
+print(length(unique(k)))
+
+
+View(k)
