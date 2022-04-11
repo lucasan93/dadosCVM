@@ -8,11 +8,6 @@ library(tm)
 library(stringr)
 
 
-
-x <- dadosCVM::cad_fi() %>%
-                  pull(nome) %>%
-                  unique()
-
 simpl_funds <- function(names){
 
   rem <- stringr::str_to_upper(c('de', 'investimento', 'fundo', 'em', 'multimercado',
@@ -24,14 +19,3 @@ simpl_funds <- function(names){
   stringr::str_squish(stringr::str_remove_all(gsub('[[:punct:]]',' ', names), paste(paste0('\\b',rem,'\\b'),collapse = '|')))
 
 }
-
-
-k <- simpl_funds(x)
-
-
-print(length(k))
-
-print(length(unique(k)))
-
-
-View(k)
