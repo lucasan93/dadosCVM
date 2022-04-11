@@ -1,12 +1,12 @@
 
 
-### function under development - do not use
-### função em desenvolvimento - nao use
-
-library(dplyr)
-library(tm)
-library(stringr)
-
+#' Simplify funds names
+#'
+#' @param names funds names to simplify
+#'
+#' @return character vector
+#' @export
+#'
 
 simpl_funds <- function(names){
 

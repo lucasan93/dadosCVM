@@ -3,5 +3,6 @@
 export(cad_fi)
 export(dados_diarios)
 export(dados_fidc)
+export(simpl_funds)
 importFrom(magrittr,"%>%")
 importFrom(rlang,.data)
