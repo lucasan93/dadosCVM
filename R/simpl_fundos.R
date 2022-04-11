@@ -19,6 +19,3 @@ simpl_funds <- function(names){
   stringr::str_squish(stringr::str_remove_all(gsub('[[:punct:]]',' ', names), paste(paste0('\\b',rem,'\\b'),collapse = '|')))
 
 }
-
-
-simpl_funds('fundo de investimento em multimercado luca')
